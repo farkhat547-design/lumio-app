@@ -1671,6 +1671,38 @@
         );
 
     </script>
+<!-- Firebase SDK & Auth -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+  import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+  const firebaseConfig = {
+    apiKey: "AIzaSyB0OeWZYNuceSKmWyROF0ApRu7KwosYJuE",
+    authDomain: "lumio-app-c2d26.firebaseapp.com",
+    projectId: "lumio-app-c2d26",
+    storageBucket: "lumio-app-c2d26.firebasestorage.app",
+    messagingSenderId: "1094376054556",
+    appId: "1:1094376054556:web:df88379a3e96331c6fa4d9",
+    measurementId: "G-HMCSX7HH58"
+  }
+
+  // Инициализация Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // Глобальный объект для работы с аккаунтом
+  window.lumioAuth = { auth, db, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, doc, setDoc, getDoc };
+
+  // Проверка статуса входа
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      console.log("Пользователь вошёл:", user.email);
+    } else {
+      console.log("Пользователь не авторизован");
+    }
+  });
+</script>
 </body>
 </html>
