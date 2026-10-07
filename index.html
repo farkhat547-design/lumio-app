@@ -109,6 +109,45 @@ body {
     z-index: 10;
 }
 
+.lumio-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.6px;
+}
+
+.lumio-glow {
+    color: #ffffff;
+
+    text-shadow:
+        0 0 15px rgba(168, 85, 247, 0.35);
+}
+
+.ai-badge {
+    padding: 3px 8px;
+
+    border-radius: 8px;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #8b5cf6,
+            #ec4899
+        );
+
+    box-shadow:
+        0 0 14px rgba(168, 85, 247, 0.35);
+}
+
 .header::after {
 
     content: "";
@@ -912,7 +951,10 @@ body {
 
 <div class="header">
 
-    ✦ LUMIO AI Tutor
+    <div class="lumio-brand">
+        <span class="lumio-glow">Lumio</span>
+        <span class="ai-badge">AI</span>
+    </div>
 
 </div>
 
