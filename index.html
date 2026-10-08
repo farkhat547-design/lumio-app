@@ -142,19 +142,16 @@
       input.value = '';
       chat.scrollTop = chat.scrollHeight;
 
-      // Показываем индикатор загрузки
 const botMsg = document.createElement('div');
 botMsg.className = 'message bot-msg';
 botMsg.innerText = "Думаю...";
 chat.appendChild(botMsg);
 chat.scrollTop = chat.scrollHeight;
 
-// Закодированная строка Base64 (GitHub её не увидит и не заблокирует)
 const encodedKey = "QVEuQWI4Uk42STU2QXBsOTc1MlFic2NQZ1ZPMWdDVllPcDdNYzhub3NPZC1kaHZKYVVmMmc=";
 const GEMINI_API_KEY = atob(encodedKey);
 
-// Основная актуальная модель, которую запрашивает Google
-const MODEL_NAME = 'gemma-4-26b-a4b-it';
+const MODEL_NAME = 'gemini-3.8-flash';
 
 fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${GEMINI_API_KEY}`, {
     method: 'POST',
