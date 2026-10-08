@@ -162,9 +162,12 @@ fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:gen
         'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-        contents: [{
-            parts: [{ text: userMessage }]
-        }]
+        contents: [
+            {
+                role: "user",
+                parts: [{ text: `Ты — LUMIO, ИИ-репетитор по подготовке к ОРТ в Кыргызстане. Отвечай кратко. Вопрос: ${text}` }]
+            }
+        ]
     })
 })
 .then(async response => {
