@@ -153,18 +153,18 @@ chat.scrollTop = chat.scrollHeight;
 const encodedKey = "QVEuQWI4Uk42STU2QXBsOTc1MlFic2NQZ1ZPMWdDVllPcDdNYzhub3NPZC1kaHZKYVVmMmc=";
 const GEMINI_API_KEY = atob(encodedKey);
 
-fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+// Основная актуальная модель, которую запрашивает Google
+const MODEL_NAME = 'gemini-2.5-flash';
+
+fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${GEMINI_API_KEY}`, {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-        contents: [
-            {
-                role: "user",
-                parts: [{ text: `Ты — LUMIO, ИИ-репетитор по подготовке к ОРТ в Кыргызстане. Отвечай кратко. Вопрос: ${text}` }]
-            }
-        ]
+        contents: [{
+            parts: [{ text: userMessage }]
+        }]
     })
 })
 .then(async response => {
