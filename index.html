@@ -21,13 +21,59 @@
             height: 100vh;
         }
 
+        /* Экран входа */
+        .login-card {
+            background: #1e1e24;
+            padding: 30px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 380px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .login-card h2 {
+            margin-bottom: 20px;
+            color: #a5b4fc;
+        }
+
+        .login-card input {
+            width: 100%;
+            margin-bottom: 12px;
+            padding: 12px;
+            background: #121214;
+            border: 1px solid #383846;
+            border-radius: 8px;
+            color: white;
+            outline: none;
+        }
+
+        .login-card button {
+            width: 100%;
+            padding: 12px;
+            background: #6366f1;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .error-msg {
+            color: #ef4444;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* Чат (скрыт до логина) */
         .chat-card {
             width: 100%;
             max-width: 600px;
             height: 90vh;
             background: #1e1e24;
             border-radius: 16px;
-            display: flex;
+            display: none;
             flex-direction: column;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -88,7 +134,7 @@
             border-top: 1px solid #383846;
         }
 
-        input {
+        .input-area input {
             flex: 1;
             background: #121214;
             border: 1px solid #383846;
@@ -98,11 +144,7 @@
             outline: none;
         }
 
-        input:focus {
-            border-color: #6366f1;
-        }
-
-        button {
+        .input-area button {
             background: #6366f1;
             color: white;
             border: none;
@@ -110,17 +152,22 @@
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            transition: background 0.2s;
-        }
-
-        button:hover {
-            background: #4f46e5;
         }
     </style>
 </head>
 <body>
 
-    <div class="chat-card">
+    <!-- Форма входа -->
+    <div class="login-card" id="loginCard">
+        <h2>LUMIO — Вход</h2>
+        <input type="text" id="username" placeholder="Логин">
+        <input type="password" id="password" placeholder="Пароль">
+        <button onclick="login()">Войти</button>
+        <div class="error-msg" id="errorMsg">Неверный логин или пароль!</div>
+    </div>
+
+    <!-- Чат -->
+    <div class="chat-card" id="chatCard">
         <div class="header">
             <h2>LUMIO</h2>
         </div>
@@ -136,11 +183,26 @@
     </div>
 
     <script>
+        // Проверка логина и пароля
+        function login() {
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value.trim();
+            const errorMsg = document.getElementById('errorMsg');
+
+            // Укажите нужные логин и пароль здесь
+            if (user === "admin" && pass === "1234") {
+                document.getElementById('loginCard').style.display = 'none';
+                document.getElementById('chatCard').style.display = 'flex';
+            } else {
+                errorMsg.style.display = 'block';
+            }
+        }
+
         // Ваш зашифрованный API ключ
         const encodedKey = "QVEuQWI4Uk42STU2QXBsOTc1MlFic2NQZ1ZPMWdDVllPcDdNYzhub3NPZC1kaHZKYVVmMmc="; 
         const GEMINI_API_KEY = atob(encodedKey).trim();
 
-        // Список моделей для подстраховки
+        // Список моделей
         const modelsToTry = [
             'gemini-3.8-flash',
             'gemini-3.1-pro-preview',
@@ -156,7 +218,6 @@
             const text = input.value.trim();
             if (!text) return;
 
-            // Выводим сообщение пользователя
             const userMsg = document.createElement('div');
             userMsg.className = 'message user-msg';
             userMsg.innerText = text;
@@ -165,7 +226,6 @@
             input.value = '';
             chat.scrollTop = chat.scrollHeight;
 
-            // Индикатор загрузки
             const botMsg = document.createElement('div');
             botMsg.className = 'message bot-msg';
             botMsg.innerText = "Думаю...";
@@ -184,7 +244,7 @@
                         body: JSON.stringify({
                             contents: [{
                                 role: "user",
-                                parts: [{ text: "Ты — LUMIO, ИИ-репетитор по подготовке к ОРТ в Кыргызстане. Отвечай кратко, понятными словами и только по-русски. Вопрос: " + text }]
+                                parts: [{ text: "Ты — LUMIO, ИИ-репетитор по подготовке к ОРТ в Кыргызстане. Отвечай кратко и только по-русски. Вопрос: " + text }]
                             }]
                         })
                     });
@@ -199,12 +259,12 @@
                         break;
                     }
                 } catch (err) {
-                    console.error("Ошибка при запросе:", err);
+                    console.error("Ошибка сети:", err);
                 }
             }
 
             if (!success) {
-                botMsg.innerText = "Серверы сейчас перегружены. Попробуйте отправить сообщение ещё раз.";
+                botMsg.innerText = "Ошибка отправки. Попробуйте ещё раз.";
             }
         }
     </script>
