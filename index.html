@@ -21,8 +21,8 @@
             height: 100vh;
         }
 
-        /* Экран входа */
-        .login-card {
+        /* Карточка Авторизации / Регистрации */
+        .auth-card {
             background: #1e1e24;
             padding: 30px;
             border-radius: 16px;
@@ -32,12 +32,12 @@
             text-align: center;
         }
 
-        .login-card h2 {
+        .auth-card h2 {
             margin-bottom: 20px;
             color: #a5b4fc;
         }
 
-        .login-card input {
+        .auth-card input {
             width: 100%;
             margin-bottom: 12px;
             padding: 12px;
@@ -48,7 +48,7 @@
             outline: none;
         }
 
-        .login-card button {
+        .auth-card button.main-btn {
             width: 100%;
             padding: 12px;
             background: #6366f1;
@@ -57,16 +57,29 @@
             border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
+            margin-top: 5px;
         }
 
-        .error-msg {
-            color: #ef4444;
+        .switch-btn {
+            background: transparent;
+            border: none;
+            color: #a5b4fc;
             font-size: 0.85rem;
-            margin-top: 10px;
+            margin-top: 15px;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .status-msg {
+            font-size: 0.85rem;
+            margin-top: 12px;
             display: none;
         }
 
-        /* Чат (скрыт до логина) */
+        .error { color: #ef4444; }
+        .success { color: #10b981; }
+
+        /* Чат */
         .chat-card {
             width: 100%;
             max-width: 600px;
@@ -157,13 +170,16 @@
 </head>
 <body>
 
-    <!-- Форма входа -->
-    <div class="login-card" id="loginCard">
-        <h2>LUMIO — Вход</h2>
-        <input type="text" id="username" placeholder="Логин">
+    <!-- Экран Входа / Регистрации -->
+    <div class="auth-card" id="authCard">
+        <h2 id="formTitle">LUMIO — Вход</h2>
+        <input type="text" id="username" placeholder="Логин (Email)">
         <input type="password" id="password" placeholder="Пароль">
-        <button onclick="login()">Войти</button>
-        <div class="error-msg" id="errorMsg">Неверный логин или пароль!</div>
+        
+        <button class="main-btn" id="mainBtn" onclick="handleAuth()">Войти</button>
+        <button class="switch-btn" id="switchBtn" onclick="toggleAuthMode()">Нет аккаунта? Зарегистрироваться</button>
+        
+        <div class="status-msg" id="statusMsg"></div>
     </div>
 
     <!-- Чат -->
@@ -183,26 +199,75 @@
     </div>
 
     <script>
-        // Проверка логина и пароля
-        function login() {
+        let isLoginMode = true;
+
+        // Переключение режимов: Вход / Регистрация
+        function toggleAuthMode() {
+            isLoginMode = !isLoginMode;
+            const title = document.getElementById('formTitle');
+            const mainBtn = document.getElementById('mainBtn');
+            const switchBtn = document.getElementById('switchBtn');
+            const statusMsg = document.getElementById('statusMsg');
+
+            statusMsg.style.display = 'none';
+
+            if (isLoginMode) {
+                title.innerText = "LUMIO — Вход";
+                mainBtn.innerText = "Войти";
+                switchBtn.innerText = "Нет аккаунта? Зарегистрироваться";
+            } else {
+                title.innerText = "LUMIO — Регистрация";
+                mainBtn.innerText = "Создать аккаунт";
+                switchBtn.innerText = "Уже есть аккаунт? Войти";
+            }
+        }
+
+        // Обработчик входа и регистрации
+        function handleAuth() {
             const user = document.getElementById('username').value.trim();
             const pass = document.getElementById('password').value.trim();
-            const errorMsg = document.getElementById('errorMsg');
 
-            // Укажите нужные логин и пароль здесь
-            if (user === "farkhat547@gmail.com" && pass === "Farkhathongkong2006") {
-                document.getElementById('loginCard').style.display = 'none';
-                document.getElementById('chatCard').style.display = 'flex';
-            } else {
-                errorMsg.style.display = 'block';
+            if (!user || !pass) {
+                showStatus("Заполните логин и пароль!", "error");
+                return;
             }
+
+            // Достаем базу пользователей из браузера
+            const users = JSON.parse(localStorage.getItem('lumio_users') || '{}');
+
+            if (isLoginMode) {
+                // ВХОД
+                if (users[user] && users[user] === pass) {
+                    document.getElementById('authCard').style.display = 'none';
+                    document.getElementById('chatCard').style.display = 'flex';
+                } else {
+                    showStatus("Неверный логин или пароль!", "error");
+                }
+            } else {
+                // РЕГИСТРАЦИЯ
+                if (users[user]) {
+                    showStatus("Пользователь уже существует!", "error");
+                    return;
+                }
+
+                users[user] = pass;
+                localStorage.setItem('lumio_users', JSON.stringify(users));
+                showStatus("Успешная регистрация! Теперь войдите.", "success");
+                toggleAuthMode();
+            }
+        }
+
+        function showStatus(text, type) {
+            const statusMsg = document.getElementById('statusMsg');
+            statusMsg.innerText = text;
+            statusMsg.className = "status-msg " + type;
+            statusMsg.style.display = 'block';
         }
 
         // Ваш зашифрованный API ключ
         const encodedKey = "QVEuQWI4Uk42STU2QXBsOTc1MlFic2NQZ1ZPMWdDVllPcDdNYzhub3NPZC1kaHZKYVVmMmc="; 
         const GEMINI_API_KEY = atob(encodedKey).trim();
 
-        // Список моделей
         const modelsToTry = [
             'gemini-3.8-flash',
             'gemini-3.1-pro-preview',
