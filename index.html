@@ -1,225 +1,212 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>LUMIO — AI Tutor</title>
-  
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#0f0c1b">
-  
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUMIO — ИИ-репетитор ОРТ</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background-color: #0f0c1b; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-    
-    header { background: #1a162b; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #332d4d; }
-    .logo-container { display: flex; align-items: center; gap: 10px; }
-    .logo-container img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
-    .logo-container h1 { font-size: 18px; font-weight: bold; background: linear-gradient(135deg, #a78bfa, #7c4dff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    
-    #chat-container { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 12px; }
-    .message { max-width: 80%; padding: 12px 16px; border-radius: 16px; font-size: 15px; line-height: 1.4; word-wrap: break-word; }
-    .user-msg { background: #7c4dff; color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
-    .bot-msg { background: #1a162b; color: #e2e8f0; align-self: flex-start; border-bottom-left-radius: 4px; border: 1px solid #332d4d; }
-    
-    .input-area { background: #1a162b; padding: 12px; display: flex; gap: 8px; border-top: 1px solid #332d4d; }
-    .input-area input { flex: 1; background: #0f0c1b; border: 1px solid #332d4d; padding: 12px 16px; border-radius: 24px; color: #fff; font-size: 15px; outline: none; }
-    .input-area button { background: #7c4dff; border: none; width: 44px; height: 44px; border-radius: 50%; color: #fff; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-  </style>
+        body {
+            background-color: #121214;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js');
-    }
-  </script>
+        .chat-card {
+            width: 100%;
+            max-width: 600px;
+            height: 90vh;
+            background: #1e1e24;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .header {
+            padding: 20px;
+            background: #282832;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #383846;
+        }
+
+        .header h2 {
+            font-size: 1.2rem;
+            color: #a5b4fc;
+        }
+
+        .chat-container {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+
+        .user-msg {
+            background-color: #6366f1;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .bot-msg {
+            background-color: #2a2a36;
+            color: #e2e8f0;
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+            white-space: pre-wrap;
+        }
+
+        .input-area {
+            padding: 15px;
+            background: #282832;
+            display: flex;
+            gap: 10px;
+            border-top: 1px solid #383846;
+        }
+
+        input {
+            flex: 1;
+            background: #121214;
+            border: 1px solid #383846;
+            padding: 12px 16px;
+            border-radius: 8px;
+            color: white;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #6366f1;
+        }
+
+        button {
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #4f46e5;
+        }
+    </style>
 </head>
 <body>
 
-  <div id="auth-modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 12, 27, 0.95); display: flex; align-items: center; justify-content: center; z-index: 9999; color: white;">
-    <div style="background: #1a162b; padding: 25px; border-radius: 16px; border: 1px solid #332d4d; width: 90%; max-width: 360px; text-align: center;">
-      <img src="logo.png" style="width: 70px; height: 70px; margin-bottom: 10px; border-radius: 50%; object-fit: cover;">
-      <h2 id="auth-title" style="margin-bottom: 5px; font-size: 20px;">Вход в LUMIO</h2>
-      <p style="color: #a099c0; font-size: 13px; margin-bottom: 20px;">Подготовка к ОРТ с ИИ</p>
-      
-      <input type="email" id="auth-email" placeholder="Ваш Email" style="width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #332d4d; background: #0f0c1b; color: white; box-sizing: border-box; outline: none;">
-      <input type="password" id="auth-pass" placeholder="Пароль" style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #332d4d; background: #0f0c1b; color: white; box-sizing: border-box; outline: none;">
-      
-      <button id="auth-submit-btn" onclick="handleAuthSubmit()" style="width: 100%; padding: 12px; border-radius: 8px; border: none; background: #7c4dff; color: white; font-weight: bold; cursor: pointer; margin-bottom: 12px;">Войти</button>
-      
-      <p style="font-size: 13px; color: #a099c0; cursor: pointer;" onclick="toggleAuthMode()">
-        <span id="auth-toggle-text">Нет аккаунта? Зарегистрироваться</span>
-      </p>
+    <div class="chat-card">
+        <div class="header">
+            <h2>LUMIO</h2>
+        </div>
+
+        <div class="chat-container" id="chat-container">
+            <div class="message bot-msg">Привет! Я LUMIO, твой ИИ-репетитор по подготовке к ОРТ. Чем помочь сегодня?</div>
+        </div>
+
+        <div class="input-area">
+            <input type="text" id="user-input" placeholder="Задай вопрос по ОРТ..." onkeypress="if(event.key === 'Enter') sendMessage()">
+            <button onclick="sendMessage()">→</button>
+        </div>
     </div>
-  </div>
 
-  <header>
-    <div class="logo-container">
-      <img src="logo.png" alt="LUMIO Logo">
-      <h1>LUMIO</h1>
-    </div>
-    <button onclick="window.lumioAuth.signOut(window.lumioAuth.auth)" style="background: none; border: 1px solid #332d4d; color: #a099c0; padding: 6px 12px; border-radius: 12px; cursor: pointer; font-size: 12px;">Выйти</button>
-  </header>
+    <script>
+        // Ваш зашифрованный API ключ
+        const encodedKey = "QVEuQWI4Uk42STU2QXBsOTc1MlFic2NQZ1ZPMWdDVllPcDdNYzhub3NPZC1kaHZKYVVmMmc="; 
+        const GEMINI_API_KEY = atob(encodedKey).trim();
 
-  <div id="chat-container">
-    <div class="message bot-msg">Привет! Я LUMIO, твой ИИ-репетитор по подготовке к ОРТ. Чем помочь сегодня?</div>
-  </div>
+        // Список моделей для подстраховки
+        const modelsToTry = [
+            'gemini-3.8-flash',
+            'gemini-3.1-pro-preview',
+            'gemini-2.0-flash'
+        ];
 
-  <div class="input-area">
-    <input type="text" id="user-input" placeholder="Задай вопрос по ОРТ..." onkeypress="if(event.key==='Enter') sendMessage()">
-    <button onclick="sendMessage()">➔</button>
-  </div>
+        async function sendMessage() {
+            const input = document.getElementById('user-input');
+            const chat = document.getElementById('chat-container');
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+            if (!input || !chat) return;
 
-    const firebaseConfig = {
-       apiKey: "AIzaSyB0OeWZYnucEsKmWyROF0ApRu7KwosYJuE",
-       authDomain: "lumio-app-c2d26.firebaseapp.com",
-       projectId: "lumio-app-c2d26",
-       storageBucket: "lumio-app-c2d26.firebasestorage.app",
-       messagingSenderId: "1094376054556",
-       appId: "1:1094376054556:web:df88379a3e96331c6fa4d9",
-       measurementId: "G-HMCSX7HH5B"
-};
+            const text = input.value.trim();
+            if (!text) return;
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+            // Выводим сообщение пользователя
+            const userMsg = document.createElement('div');
+            userMsg.className = 'message user-msg';
+            userMsg.innerText = text;
+            chat.appendChild(userMsg);
 
-    window.lumioAuth = { auth, db, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, doc, setDoc, getDoc };
+            input.value = '';
+            chat.scrollTop = chat.scrollHeight;
 
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        document.getElementById('auth-modal').style.display = 'none';
-      } else {
-        document.getElementById('auth-modal').style.display = 'flex';
-      }
-    });
+            // Индикатор загрузки
+            const botMsg = document.createElement('div');
+            botMsg.className = 'message bot-msg';
+            botMsg.innerText = "Думаю...";
+            chat.appendChild(botMsg);
+            chat.scrollTop = chat.scrollHeight;
 
-    let isSignUpMode = false;
-    window.toggleAuthMode = () => {
-      isSignUpMode = !isSignUpMode;
-      document.getElementById('auth-title').innerText = isSignUpMode ? 'Регистрация в LUMIO' : 'Вход в LUMIO';
-      document.getElementById('auth-submit-btn').innerText = isSignUpMode ? 'Создать аккаунт' : 'Войти';
-      document.getElementById('auth-toggle-text').innerText = isSignUpMode ? 'Уже есть аккаунт? Войти' : 'Нет аккаунта? Зарегистрироваться';
-    };
+            let success = false;
 
-    window.handleAuthSubmit = async () => {
-      const email = document.getElementById('auth-email').value;
-      const pass = document.getElementById('auth-pass').value;
-      if(!email || !pass) { alert("Введите Email и пароль!"); return; }
-      try {
-        if (isSignUpMode) {
-          await createUserWithEmailAndPassword(auth, email, pass);
-        } else {
-          await signInWithEmailAndPassword(auth, email, pass);
-        }
-      } catch (error) {
-        alert("Ошибка: " + error.message);
-      }
-    };
-  </script>
+            for (const model of modelsToTry) {
+                try {
+                    const url = "https://generativelanguage.googleapis.com/v1beta/models/" + model + ":generateContent?key=" + GEMINI_API_KEY;
 
-  <script>
-    function sendMessage() {
-      const input = document.getElementById('user-input');
-      const text = input.value.trim();
-      if(!text) return;
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{
+                                role: "user",
+                                parts: [{ text: "Ты — LUMIO, ИИ-репетитор по подготовке к ОРТ в Кыргызстане. Отвечай кратко, понятными словами и только по-русски. Вопрос: " + text }]
+                            }]
+                        })
+                    });
 
-      const chat = document.getElementById('chat-container');
-      
-      const userMsg = document.createElement('div');
-      userMsg.className = 'message user-msg';
-      userMsg.innerText = text;
-      chat.appendChild(userMsg);
-      
-      input.value = '';
-      chat.scrollTop = chat.scrollHeight;
+                    const data = await response.json();
 
-const botMsg = document.createElement('div');
-botMsg.className = 'message bot-msg';
-botMsg.innerText = "Думаю...";
-chat.appendChild(botMsg);
-chat.scrollTop = chat.scrollHeight;
-
-<script>
-// 1. Закодированный API ключ (вставьте ваш Base64 ключ)
-const encodedKey = "QVEuQWI4Uk42STU2QXBsOTc1MlFic2NQZ1ZPMWdDVllPcDdNYzhub3NPZC1kaHZKYVVmMmc="; 
-const GEMINI_API_KEY = atob(encodedKey).trim();
-
-// 2. Список доступных моделей для подстраховки
-const modelsToTry = [
-    'gemini-3.8-flash',
-    'gemini-3.1-pro-preview',
-    'gemini-2.0-flash'
-];
-
-async function sendMessage() {
-    const input = document.getElementById('user-input') || document.getElementById('userInput') || document.querySelector('input');
-    const chat = document.getElementById('chat-container') || document.getElementById('chat') || document.querySelector('.chat-container');
-
-    if (!input || !chat) return;
-
-    const text = input.value.trim();
-    if (!text) return;
-
-    // Сообщение пользователя
-    const userMsg = document.createElement('div');
-    userMsg.className = 'message user-msg';
-    userMsg.innerText = text;
-    chat.appendChild(userMsg);
-
-    input.value = '';
-    chat.scrollTop = chat.scrollHeight;
-
-    // Индикатор загрузки
-    const botMsg = document.createElement('div');
-    botMsg.className = 'message bot-msg';
-    botMsg.innerText = "Думаю...";
-    chat.appendChild(botMsg);
-    chat.scrollTop = chat.scrollHeight;
-
-    let success = false;
-
-    for (const model of modelsToTry) {
-        try {
-            const url = "https://generativelanguage.googleapis.com/v1beta/models/" + model + ":generateContent?key=" + GEMINI_API_KEY;
-
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    contents: [{
-                        role: "user",
-                        parts: [{ text: "Ты — LUMIO, ИИ-репетитор по подготовке к ОРТ в Кыргызстане. Отвечай кратко и по-русски. Вопрос: " + text }]
-                    }]
-                })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
-                botMsg.innerText = reply || "Пустой ответ от ИИ.";
-                chat.scrollTop = chat.scrollHeight;
-                success = true;
-                break;
+                    if (response.ok) {
+                        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                        botMsg.innerText = reply || "Пустой ответ от ИИ.";
+                        chat.scrollTop = chat.scrollHeight;
+                        success = true;
+                        break;
+                    }
+                } catch (err) {
+                    console.error("Ошибка при запросе:", err);
+                }
             }
-        } catch (err) {
-            console.error("Ошибка модели " + model + ":", err);
-        }
-    }
 
-    if (!success) {
-        botMsg.innerText = "Ошибка отправки. Проверьте подключение или попробуйте позже.";
-    }
-}
-</script>
+            if (!success) {
+                botMsg.innerText = "Серверы сейчас перегружены. Попробуйте отправить сообщение ещё раз.";
+            }
+        }
+    </script>
 </body>
 </html>
