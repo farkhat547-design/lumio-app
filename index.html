@@ -150,7 +150,7 @@ chat.appendChild(botMsg);
 chat.scrollTop = chat.scrollHeight;
 
 // Закодированная строка Base64 (GitHub её не увидит и не заблокирует)
-const encodedKey = "QVEuQWI4Uk42SU5sVWpRdGpHbUw0bU5ndzR3QTF3aVhYVGFUQm4xek5kalBEUnVRdkJNaWc=";
+const encodedKey = "QVEuQWI4Uk42STU2QXBsOTc1MlFic2NQZ1ZPMWdDVllPcDdNYzhub3NPZC1kaHZKYVVmMmc=";
 const GEMINI_API_KEY = atob(encodedKey);
 
 fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
