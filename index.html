@@ -142,13 +142,39 @@
       input.value = '';
       chat.scrollTop = chat.scrollHeight;
 
-      setTimeout(() => {
-        const botMsg = document.createElement('div');
-        botMsg.className = 'message bot-msg';
-        botMsg.innerText = "Отличный вопрос! Я готовый помочь тебе разобраться с этой темой ОРТ.";
-        chat.appendChild(botMsg);
-        chat.scrollTop = chat.scrollHeight;
-      }, 600);
+      // Показываем индикатор загрузки
+const botMsg = document.createElement('div');
+botMsg.className = 'message bot-msg';
+botMsg.innerText = "Думаю...";
+chat.appendChild(botMsg);
+chat.scrollTop = chat.scrollHeight;
+
+// Ваше обращение к Gemini API
+const GEMINI_API_KEY = "AIzaSyB0OeWZYNuceSKmWyROF0ApRu7KwosYJuE";
+
+fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+        contents: [{
+            parts: [{
+                text: `Ты — LUMIO, ИИ-репетитор по подготовке к ОРТ (Общереспубликанское тестирование в Кыргызстане). Отвечай понятно, кратко и помогай ученику. Вопрос: ${text}`
+            }]
+        }]
+    })
+})
+.then(response => response.json())
+.then(data => {
+    const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || "Извините, произошла ошибка при получении ответа.";
+    botMsg.innerText = aiResponse;
+    chat.scrollTop = chat.scrollHeight;
+})
+.catch(error => {
+    console.error("Ошибка API:", error);
+    botMsg.innerText = "Ошибка подключения к ИИ.";
+});
     }
   </script>
 </body>
