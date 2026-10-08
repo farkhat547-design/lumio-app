@@ -154,7 +154,7 @@ const encodedKey = "QVEuQWI4Uk42STU2QXBsOTc1MlFic2NQZ1ZPMWdDVllPcDdNYzhub3NPZC1k
 const GEMINI_API_KEY = atob(encodedKey);
 
 // Основная актуальная модель, которую запрашивает Google
-const MODEL_NAME = 'gemini-3.8-flash';
+const MODEL_NAME = 'gemini-2.5-flash';
 
 fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${GEMINI_API_KEY}`, {
     method: 'POST',
