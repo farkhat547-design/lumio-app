@@ -162,10 +162,13 @@ fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:gen
         'Content-Type': 'application/json'
     },
     body: JSON.stringify({
+        system_instruction: {
+            parts: [{ text: "Ты — LUMIO, дружелюбный ИИ-репетитор по подготовке к ОРТ в Кыргызстане. Отвечай ПО-РУССКИ, кратко, понятно и по существу." }]
+        },
         contents: [
             {
                 role: "user",
-                parts: [{ text: `Ты — LUMIO, ИИ-репетитор по подготовке к ОРТ в Кыргызстане. Отвечай кратко. Вопрос: ${text}` }]
+                parts: [{ text: text }]
             }
         ]
     })
