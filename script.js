@@ -206,6 +206,112 @@ async function sendMessage() {
         }
     }
 
+// Текущий язык ('ru' или 'kg')
+let currentLang = 'ru';
+
+// Словарь текстов для интерфейса и заданий ОРТ на двух языках
+const translations = {
+    ru: {
+        placeholder: "Задай вопрос по ОРТ...",
+        thinking: "Lumio думает...",
+        welcome: "Привет! Я Lumio AI, твой персональный репетитор по подготовке к ОРТ в Кыргызстане. Выбери нужную тему или задай свой вопрос!",
+        mathTitle: "🔢 Секция «Математическое мышление» (ОРТ):",
+        mathQ1: "Задача №1: Если цена товара сначала выросла на 20%, а потом снизилась на 20%, как изменилась первоначальная цена?\n1) Не изменилась\n2) Уменьшилась на 4%\n3) Увеличилась на 4%\n\nНапиши номер ответа!",
+        analogiesTitle: "◇ Секция «Аналогии» (ОРТ):",
+        analogiesQ1: "Задача №1: Пара: КНИГА : СТРАНИЦА\nВыберите похожую пару:\nА) Дом : Стена\nБ) Лес : Дерево\nВ) Автомобиль : Колесо\n\nНапиши букву ответа!"
+    },
+    kg: {
+        placeholder: "ЖРТ боюнча суроо бер...",
+        thinking: "Lumio ойлонууда...",
+        welcome: "Салам! Мен Lumio AI, Кыргызстандагы ЖРТга даярдануу боюнча сенин жеке репетиторумун. Кееректүү теманы танда же суроо бер!",
+        mathTitle: "🔢 «Математикалык ой жүгүртүү» бөлүмү (ЖРТ):",
+        mathQ1: "1-маселе: Товардын баасы алгач 20% га жогорулап, андан кийин 20% га арзандады. Баштапкы баа кандай өзгөрдү?\n1) Өзгөргөн жок\n2) 4% га азайды\n3) 4% га көбөйдү\n\nЖооптун номерин жаз!",
+        analogiesTitle: "◇ «Аналогиялар» бөлүмү (ЖРТ):",
+        analogiesQ1: "1-маселе: Жуп: КИТЕП : БЕТ\nОкшош жупту танда:\nА) Үй : Дубал\nБ) Токой : Дарак\nВ) Унаа : Дөңгөлөк\n\nЖооптун катасын жаз!"
+    }
+};
+
+// Функция переключения языка
+function setLanguage(lang) {
+    currentLang = lang;
+    
+    // Меняем подсветку кнопок
+    const ruBtn = document.getElementById('langRuBtn');
+    const kgBtn = document.getElementById('langKgBtn');
+    
+    if (ruBtn && kgBtn) {
+        if (lang === 'ru') {
+            ruBtn.classList.add('active-lang');
+            kgBtn.classList.remove('active-lang');
+        } else {
+            kgBtn.classList.add('active-lang');
+            ruBtn.classList.remove('active-lang');
+        }
+    }
+
+    // Меняем плейсхолдер в поле ввода
+    const input = document.getElementById('userInput');
+    if (input) {
+        input.placeholder = translations[lang].placeholder;
+    }
+}
+
+// Измененная функция выбора предмета с учетом языка
+function selectSubject(subject) {
+    const input = document.getElementById('userInput');
+    if (!input) return;
+
+    if (subject === 'Математика' || subject === 'Математика') {
+        input.value = currentLang === 'ru' ? "Хочу позаниматься по предмету: Математика. Дай мне задание." : "Математика предмети боюнча даярдангым келет. Мага тапшырма бер.";
+    } else if (subject === 'Аналогии' || subject === 'Аналогиялар') {
+        input.value = currentLang === 'ru' ? "Хочу позаниматься по предмету: Аналогии. Дай мне задание." : "Аналогиялар предмети боюнча даярдангым келет. Мага тапшырма бер.";
+    }
+    sendMessage();
+}
+
+// Интеграция языка в sendMessage (заменяем блок выдачи вопросов)
+async function sendMessage() {
+    const input = document.getElementById('userInput');
+    const history = document.getElementById('chatHistory');
+
+    if (!input || !history) return;
+
+    const text = input.value.trim();
+    if (!text) return;
+
+    const hero = document.getElementById('heroSection');
+    const cards = document.getElementById('cardsGrid');
+    if (hero) hero.style.display = 'none';
+    if (cards) cards.style.display = 'none';
+
+    const userMsg = document.createElement('div');
+    userMsg.className = 'msg user-msg';
+    userMsg.innerText = text;
+    history.appendChild(userMsg);
+
+    input.value = '';
+    history.scrollTop = history.scrollHeight;
+
+    const botMsg = document.createElement('div');
+    botMsg.className = 'msg bot-msg';
+    botMsg.innerText = translations[currentLang].thinking;
+    history.appendChild(botMsg);
+    history.scrollTop = history.scrollHeight;
+
+    await new Promise(resolve => setTimeout(resolve, 800));
+
+    let reply = "";
+    const lowerText = text.toLowerCase();
+
+    // Проверяем ключевые слова на двух языках (русский / кыргызский)
+    if (lowerText.includes('математик') || lowerText.includes('математика')) {
+        reply = translations[currentLang].mathTitle + "\n\n" + translations[currentLang].mathQ1;
+    } else if (lowerText.includes('аналог') || lowerText.includes('аналогия')) {
+        reply = translations[currentLang].analogiesTitle + "\n\n" + translations[currentLang].analogiesQ1;
+    } else {
+        reply = translations[currentLang].welcome;
+}
+
     botMsg.innerText = reply;
     history.scrollTop = history.scrollHeight;
 }
