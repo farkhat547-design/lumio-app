@@ -102,7 +102,7 @@ async function sendMessage() {
     let success = false;
 
     // Перебираем стабильные модели, включая стандартную gemini-flash
-    for (const model of ['gemini-1.5-flash', 'gemini-flash']) {
+    for (const model of ['gemini-3.8-flash', 'gemini-flash']) {
         try {
             const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
 
