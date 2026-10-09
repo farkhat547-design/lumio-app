@@ -58,7 +58,7 @@ function showStatus(text, type) {
     statusMsg.style.display = 'block';
 }
 
-const GEMINI_API_KEY = "AIzaSyAQ.Ab8RN6Iiwa3eG3RaDs9wplVIfQaUgG0NDll9lrLEdMsM02Kpfw";
+const GEMINI_API_KEY = "AIzaSyAb8RN6Iiwa3eG3RaDs9wplVIfQaUgG0NDll9lrLEdMsM02Kpfw";
 
 const modelsToTry = [
     'gemini-1.5-flash',
