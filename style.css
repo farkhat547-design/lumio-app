@@ -226,12 +226,12 @@ input::placeholder {
 /* Main app shell - ИСПРАВЛЕНО ДЛЯ КОРРЕКТНОЙ ПРОКРУТКИ */
 .app-container {
     width: min(100%, 1080px);
-    height: 92vh;
-    max-height: 850px;
-    min-height: 550px;
+    height: 85vh;
+    max-height: 800px;
+    min-height: 500px;
     display: none;
     flex-direction: column;
-    padding: 20px;
+    padding: 16px 20px;
     overflow: hidden;
     border: 1px solid var(--border);
     border-radius: 24px;
@@ -432,6 +432,7 @@ input::placeholder {
     flex-direction: column;
     gap: 12px;
     min-height: 0; /* Важно для работы flex-скролла */
+    max-height: 100%;
     margin-bottom: 12px;
     padding-right: 6px;
     overflow-y: auto; /* Включает прокрутку вниз */
