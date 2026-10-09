@@ -101,7 +101,8 @@ async function sendMessage() {
 
     let success = false;
 
-    for (const model of modelsToTry) {
+    // Перебираем стабильные модели, включая стандартную gemini-flash
+    for (const model of ['gemini-1.5-flash', 'gemini-flash']) {
         try {
             const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
 
@@ -121,14 +122,16 @@ async function sendMessage() {
                 botMsg.innerText = data.candidates[0].content.parts[0].text;
                 success = true;
                 break;
+            } else {
+                console.warn(`Модель ${model} ответила с ошибкой:`, data);
             }
         } catch (err) {
-            console.error("Ошибка сети:", err);
+            console.error("Ошибка сети для модели", model, err);
         }
     }
 
     if (!success) {
-        botMsg.innerText = "Ошибка отправки. Попробуйте еще раз.";
+        botMsg.innerText = "Не удалось получить ответ. Проверьте консоль (F12) для деталей.";
     }
 
     history.scrollTop = history.scrollHeight;
