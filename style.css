@@ -1,5 +1,5 @@
 /* =========================================================
-   LUMIO — Presentation-inspired visual system
+   LUMIO — Presentation-inspired visual system (Fixed Scroll)
    Dark violet • electric purple • pink accents
    Keeps the existing HTML classes and JavaScript hooks.
    ========================================================= */
@@ -223,10 +223,11 @@ input::placeholder {
     color: #86efac;
 }
 
-/* Main app shell */
+/* Main app shell - ИСПРАВЛЕНО ДЛЯ КОРРЕКТНОЙ ПРОКРУТКИ */
 .app-container {
     width: min(100%, 1080px);
-    height: min(900px, calc(100vh - 64px));
+    height: 90vh;
+    max-height: 900px;
     min-height: 560px;
     display: none;
     flex-direction: column;
@@ -247,8 +248,8 @@ input::placeholder {
     align-items: center;
     gap: 10px;
     flex-shrink: 0;
-    margin-bottom: 26px;
-    padding-bottom: 18px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
     border-bottom: 1px solid rgba(196, 181, 253, 0.12);
 }
 
@@ -279,15 +280,15 @@ input::placeholder {
 /* Hero */
 .hero-section {
     flex-shrink: 0;
-    margin-bottom: 22px;
+    margin-bottom: 18px;
     text-align: center;
 }
 
 .hero-section h1 {
-    margin-bottom: 11px;
+    margin-bottom: 8px;
     color: var(--text);
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: clamp(2rem, 4vw, 3.1rem);
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
     font-weight: 800;
     line-height: 1.15;
     letter-spacing: -0.065em;
@@ -299,15 +300,15 @@ input::placeholder {
 }
 
 .hero-section p {
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     color: var(--text-soft);
-    font-size: clamp(0.92rem, 2vw, 1.05rem);
-    line-height: 1.7;
+    font-size: clamp(0.9rem, 1.8vw, 1rem);
+    line-height: 1.6;
 }
 
 .hero-sub {
     display: inline-block;
-    margin-top: 5px;
+    margin-top: 4px;
     color: #d8b4fe;
     font-size: 0.84rem;
     font-weight: 700;
@@ -320,7 +321,7 @@ input::placeholder {
     justify-content: center;
     gap: 5px;
     flex-shrink: 0;
-    margin: 0 0 22px;
+    margin: 0 0 18px;
 }
 
 .lang-switcher button {
@@ -354,13 +355,13 @@ input::placeholder {
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 14px;
     flex-shrink: 0;
-    margin-bottom: 22px;
+    margin-bottom: 18px;
 }
 
 .subject-card {
     position: relative;
     min-width: 0;
-    padding: 20px 17px;
+    padding: 16px 14px;
     overflow: hidden;
     border: 1px solid var(--border);
     border-radius: 18px;
@@ -397,43 +398,43 @@ input::placeholder {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 43px;
-    height: 43px;
-    margin-bottom: 15px;
+    width: 38px;
+    height: 38px;
+    margin-bottom: 12px;
     color: #e9d5ff;
     border: 1px solid rgba(216, 180, 254, 0.2);
-    border-radius: 13px;
+    border-radius: 12px;
     background: linear-gradient(145deg, rgba(168, 85, 247, 0.24), rgba(236, 72, 153, 0.12));
     box-shadow: inset 0 1px rgba(255, 255, 255, 0.05);
-    font-size: 1.35rem;
+    font-size: 1.2rem;
     font-weight: 800;
 }
 
 .card-title {
-    margin-bottom: 7px;
+    margin-bottom: 5px;
     color: var(--text);
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.96rem;
+    font-size: 0.92rem;
     font-weight: 800;
-    line-height: 1.35;
+    line-height: 1.3;
 }
 
 .card-desc {
     color: var(--text-muted);
-    font-size: 0.76rem;
-    line-height: 1.55;
+    font-size: 0.74rem;
+    line-height: 1.5;
 }
 
-/* Chat messages */
+/* Chat messages - ИСПРАВЛЕНО ДЛЯ ПОДДЕРЖКИ СКРОЛЛА */
 .chat-history {
     display: flex;
     flex: 1 1 auto;
     flex-direction: column;
     gap: 13px;
-    min-height: 100px;
+    min-height: 0; /* Важно для работы flex-скролла */
     margin-bottom: 16px;
-    padding: 6px 8px 8px 2px;
-    overflow-y: auto;
+    padding: 8px 12px 8px 4px;
+    overflow-y: auto; /* Включает прокрутку вниз */
     overscroll-behavior: contain;
     scrollbar-color: rgba(168, 85, 247, 0.45) transparent;
     scrollbar-width: thin;
