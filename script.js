@@ -33,21 +33,24 @@ function handleAuth() {
 
     if (isLoginMode) {
         if (users[user] && users[user] === pass) {
-            document.getElementById('authCard').style.display = 'none';
-            document.getElementById('appContainer').style.display = 'flex';
+            localStorage.setItem('lumio_current_user', user);
+            showStatus("Успешный вход!", "success");
+            setTimeout(() => {
+                document.getElementById('authScreen').style.display = 'none';
+                document.getElementById('appScreen').style.display = 'block';
+            }, 1000);
         } else {
             showStatus("Неверный логин или пароль!", "error");
         }
     } else {
         if (users[user]) {
-            showStatus("Пользователь уже существует!", "error");
-            return;
+            showStatus("Такой пользователь уже существует!", "error");
+        } else {
+            users[user] = pass;
+            localStorage.setItem('lumio_users', JSON.stringify(users));
+            showStatus("Успешная регистрация! Теперь войдите.", "success");
+            toggleAuthMode();
         }
-
-        users[user] = pass;
-        localStorage.setItem('lumio_users', JSON.stringify(users));
-        showStatus("Успешная регистрация! Теперь войдите.", "success");
-        toggleAuthMode();
     }
 }
 
