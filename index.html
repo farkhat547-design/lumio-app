@@ -11,23 +11,21 @@
 
     <!-- Вход / Регистрация -->
     <div class="auth-card" id="authScreen">
-    <h2 id="formTitle">Lumio — Вход</h2>
-    <input type="text" id="username" placeholder="Логин (Email)">
-    <input type="password" id="password" placeholder="Пароль">
+        <h2 id="formTitle">Lumio — Вход</h2>
+        <input type="text" id="username" placeholder="Логин (Email)">
+        <input type="password" id="password" placeholder="Пароль">
 
-    <button class="main-btn" id="mainBtn" onclick="handleAuth()">Войти</button>
-    <div id="statusMsg" class="status-msg"></div>
-    <button class="switch-btn" id="switchBtn" onclick="toggleAuthMode()">Нет аккаунта? Зарегистрироваться</button>
-</div>
-
-    <!-- Основное приложение -->
-<div class="app-container" id="appScreen" style="display: none;">
-    <div class="navbar">
-        <span class="brand-title">Lumio</span>
-        <span class="logo-badge">AI</span>
+        <button class="main-btn" id="mainBtn" onclick="handleAuth()">Войти</button>
+        <div id="statusMsg" class="status-msg"></div>
+        <button class="switch-btn" id="switchBtn" onclick="toggleAuthMode()">Нет аккаунта? Зарегистрироваться</button>
     </div>
-    <!-- остальные блоки чата, карточки и т.д. -->
-</div>
+
+    <!-- Основное приложение (изначально скрыто) -->
+    <div class="app-container" id="appScreen" style="display: none;">
+        <div class="navbar">
+            <span class="brand-title">Lumio</span>
+            <span class="logo-badge">AI</span>
+        </div>
 
         <div class="hero-section" id="heroSection">
             <h1>Привет! Я Lumio</h1>
