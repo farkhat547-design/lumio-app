@@ -86,7 +86,7 @@ function showStatus(text, type) {
     statusMsg.style.color = type === 'error' ? 'red' : 'green';
 }
 
-const GEMINI_API_KEY = "AIzaSyAb8RN6Khq1USQum_ob4XN9HhR5ZFmEa6WkUlnfLzUzNuTLtrQA";
+const GEMINI_API_KEY = "AIzaSyAQ.Ab8RN6IONzbzKMO1h16idftWqSLgsxJ_hZpUE7JOdxAud_Kpig";
 
 function selectSubject(subject) {
     const input = document.getElementById('userInput');
@@ -125,8 +125,8 @@ async function sendMessage() {
 
     let success = false;
 
-    // Перебираем модели по очереди: если первая занята или недоступна, сразу переключается на вторую
-    for (const model of ['gemini-3.8-flash', 'gemini-3.7-flash']) {
+    // Перебираем актуальные модели с корректной структурой запроса
+    for (const model of ['gemini-1.5-flash', 'gemini-2.0-flash']) {
         try {
             const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
 
@@ -136,9 +136,14 @@ async function sendMessage() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    contents: [{
-                        parts: [{ text: "Ты — Lumio AI, персональный репетитор по ОРТ в Кыргызстане. Отвечай понятно и подробно. Вопрос: " + text }]
-                    }]
+                    contents: [
+                        {
+                            role: "user",
+                            parts: [
+                                { text: "Ты — Lumio AI, персональный репетитор по ОРТ в Кыргызстане. Отвечай понятно и подробно. Вопрос ученика: " + text }
+                            ]
+                        }
+                    ]
                 })
             });
 
