@@ -226,15 +226,15 @@ input::placeholder {
 /* Main app shell - ИСПРАВЛЕНО ДЛЯ КОРРЕКТНОЙ ПРОКРУТКИ */
 .app-container {
     width: min(100%, 1080px);
-    height: 84vh;
-    max-height: 820px;
-    min-height: 560px;
+    height: 92vh;
+    max-height: 850px;
+    min-height: 550px;
     display: none;
     flex-direction: column;
-    padding: clamp(20px, 3vw, 34px);
+    padding: 20px;
     overflow: hidden;
     border: 1px solid var(--border);
-    border-radius: 30px;
+    border-radius: 24px;
     background: linear-gradient(145deg, rgba(19, 12, 42, 0.88), rgba(11, 7, 27, 0.94));
     box-shadow: var(--shadow-card), 0 0 70px rgba(124, 58, 237, 0.12);
     backdrop-filter: blur(24px);
@@ -430,10 +430,10 @@ input::placeholder {
     display: flex;
     flex: 1 1 auto;
     flex-direction: column;
-    gap: 13px;
+    gap: 12px;
     min-height: 0; /* Важно для работы flex-скролла */
-    margin-bottom: 16px;
-    padding: 8px 12px 8px 4px;
+    margin-bottom: 12px;
+    padding-right: 6px;
     overflow-y: auto; /* Включает прокрутку вниз */
     overscroll-behavior: contain;
     scrollbar-color: rgba(168, 85, 247, 0.45) transparent;
