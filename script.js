@@ -10,19 +10,27 @@ function toggleAuthMode() {
     if (statusMsg) statusMsg.style.display = 'none';
 
     if (isLoginMode) {
-        title.innerText = "Lumio — Вход";
-        mainBtn.innerText = "Войти";
-        switchBtn.innerText = "Нет аккаунта? Зарегистрироваться";
+        if (title) title.innerText = "Lumio — Вход";
+        if (mainBtn) mainBtn.innerText = "Войти";
+        if (switchBtn) switchBtn.innerText = "Нет аккаунта? Зарегистрироваться";
     } else {
-        title.innerText = "Lumio — Регистрация";
-        mainBtn.innerText = "Создать аккаунт";
-        switchBtn.innerText = "Уже есть аккаунт? Войти";
+        if (title) title.innerText = "Lumio — Регистрация";
+        if (mainBtn) mainBtn.innerText = "Создать аккаунт";
+        if (switchBtn) switchBtn.innerText = "Уже есть аккаунт? Войти";
     }
 }
 
 function handleAuth() {
-    const user = document.getElementById('username').value.trim();
-    const pass = document.getElementById('password').value.trim();
+    const userField = document.getElementById('username');
+    const passField = document.getElementById('password');
+    
+    if (!userField || !passField) {
+        showStatus("Ошибка: поля ввода не найдены в HTML!", "error");
+        return;
+    }
+
+    const user = userField.value.trim();
+    const pass = passField.value.trim();
 
     if (!user || !pass) {
         showStatus("Заполните логин и пароль!", "error");
@@ -36,8 +44,10 @@ function handleAuth() {
             localStorage.setItem('lumio_current_user', user);
             showStatus("Успешный вход!", "success");
             setTimeout(() => {
-                document.getElementById('authScreen').style.display = 'none';
-                document.getElementById('appScreen').style.display = 'block';
+                const authScreen = document.getElementById('authScreen');
+                const appScreen = document.getElementById('appScreen');
+                if (authScreen) authScreen.style.display = 'none';
+                if (appScreen) appScreen.style.display = 'block';
             }, 1000);
         } else {
             showStatus("Неверный логин или пароль!", "error");
@@ -77,11 +87,6 @@ function showStatus(text, type) {
 }
 
 const GEMINI_API_KEY = "AIzaSyAb8RN6Khq1USQum_ob4XN9HhR5ZFmEa6WkUlnfLzUzNuTLtrQA";
-
-const modelsToTry = [
-    'gemini-1.5-flash',
-    'gemini-2.0-flash'
-];
 
 function selectSubject(subject) {
     const input = document.getElementById('userInput');
