@@ -5,6 +5,26 @@
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
 
+.lang-switcher {
+    display: flex;
+    gap: 5px;
+    margin-right: 15px;
+}
+.lang-switcher button {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+}
+.lang-switcher button.active-lang {
+    background: #6c5ce7;
+    border-color: #6c5ce7;
+    font-weight: bold;
+}
+
 body {
     background: linear-gradient(135deg, #18122B 0%, #393053 50%, #18122B 100%);
     color: #ffffff;
