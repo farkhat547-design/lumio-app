@@ -55,11 +55,25 @@ function handleAuth() {
 }
 
 function showStatus(text, type) {
-    const statusMsg = document.getElementById('statusMsg');
-    if (!statusMsg) return;
+    let statusMsg = document.getElementById('statusMsg');
+    
+    if (!statusMsg) {
+        statusMsg = document.createElement('div');
+        statusMsg.id = 'statusMsg';
+        const mainBtn = document.getElementById('mainBtn');
+        if (mainBtn && mainBtn.parentNode) {
+            mainBtn.parentNode.insertBefore(statusMsg, mainBtn.nextSibling);
+        } else {
+            document.body.appendChild(statusMsg);
+        }
+    }
+
     statusMsg.innerText = text;
     statusMsg.className = "status-msg " + type;
     statusMsg.style.display = 'block';
+    statusMsg.style.marginTop = '10px';
+    statusMsg.style.fontWeight = 'bold';
+    statusMsg.style.color = type === 'error' ? 'red' : 'green';
 }
 
 const GEMINI_API_KEY = "AIzaSyAb8RN6Khq1USQum_ob4XN9HhR5ZFmEa6WkUlnfLzUzNuTLtrQA";
