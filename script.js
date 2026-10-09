@@ -161,7 +161,7 @@ async function sendMessage() {
 
     try {
         // Твой бесплатный API ключ от Google AI Studio
-        const API_KEY = "AQ.Ab8RN6LHYrN-sdKEH-pNYBVf70SbqUm94RRbXK-2nuXHP7FvaQ"; 
+        const API_KEY = "AQ.Ab8RN6LKQ0RJ30bWUyJPTbgqo85sTs2loij3r_0fNKM_C5a8nA"; 
         
         // Используем быструю и бесплатную модель gemini-1.5-flash
         const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent`, {
