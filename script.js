@@ -7,7 +7,7 @@ function toggleAuthMode() {
     const switchBtn = document.getElementById('switchBtn');
     const statusMsg = document.getElementById('statusMsg');
 
-    statusMsg.style.display = 'none';
+    if (statusMsg) statusMsg.style.display = 'none';
 
     if (isLoginMode) {
         title.innerText = "Lumio — Вход";
@@ -56,6 +56,7 @@ function handleAuth() {
 
 function showStatus(text, type) {
     const statusMsg = document.getElementById('statusMsg');
+    if (!statusMsg) return;
     statusMsg.innerText = text;
     statusMsg.className = "status-msg " + type;
     statusMsg.style.display = 'block';
@@ -70,6 +71,7 @@ const modelsToTry = [
 
 function selectSubject(subject) {
     const input = document.getElementById('userInput');
+    if (!input) return;
     input.value = "Хочу позаниматься по предмету: " + subject + ". Дай мне первое задание.";
     sendMessage();
 }
@@ -104,17 +106,16 @@ async function sendMessage() {
 
     let success = false;
 
-    // Перебираем стабильные модели, включая стандартную gemini-flash
-    for (const model of ['gemini-2.0-flash', 'gemini-flash']) {
+    for (const model of ['gemini-2.0-flash', 'gemini-1.5-flash']) {
         try {
             const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
 
             const response = await fetch(url, {
                 method: 'POST',
                 headers: { 
-                         'Content-Type': 'application/json' 
-                         'x-goog-api-key': GEMINI_API_KEY
-},
+                    'Content-Type': 'application/json',
+                    'x-goog-api-key': GEMINI_API_KEY
+                },
                 body: JSON.stringify({
                     contents: [{
                         parts: [{ text: "Ты — Lumio AI, персональный репетитор по ОРТ в Кыргызстане. Отвечай понятно и подробно. Вопрос: " + text }]
