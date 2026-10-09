@@ -58,9 +58,7 @@ function showStatus(text, type) {
     statusMsg.style.display = 'block';
 }
 
-// Вставь сюда свой Base64 ключ
-const encodedKey = "ВСТАВЬ_СЮДА_СВОЙ_BASE64_КЛЮЧ"; 
-const GEMINI_API_KEY = atob(encodedKey).trim();
+const GEMINI_API_KEY = "AQ.Ab8RN6I56Apl9752QbscPgVO1gCVYOp7Mc8nosOd-dhvJaUf2g";
 
 const modelsToTry = [
     'gemini-3.8-flash',
