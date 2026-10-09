@@ -1,0 +1,240 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #18122B 0%, #393053 50%, #18122B 100%);
+    color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Экран авторизации */
+.auth-card {
+    background: rgba(30, 27, 46, 0.7);
+    backdrop-filter: blur(12px);
+    padding: 40px 30px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    text-align: center;
+}
+
+.auth-card h2 {
+    font-size: 1.8rem;
+    margin-bottom: 24px;
+    color: #d8b4fe;
+}
+
+.auth-card input {
+    width: 100%;
+    margin-bottom: 14px;
+    padding: 14px;
+    background: rgba(18, 16, 28, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    color: white;
+    outline: none;
+    font-size: 0.95rem;
+}
+
+.auth-card button.main-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(90deg, #a855f7 0%, #6366f1 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.auth-card button.main-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.switch-btn {
+    background: transparent;
+    border: none;
+    color: #c084fc;
+    font-size: 0.85rem;
+    margin-top: 18px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.status-msg {
+    font-size: 0.85rem;
+    margin-top: 14px;
+    display: none;
+}
+
+.error { color: #f87171; }
+.success { color: #4ade80; }
+
+/* Основной интерфейс Lumio */
+.app-container {
+    width: 100%;
+    max-width: 900px;
+    height: 90vh;
+    display: none;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.logo-badge {
+    background: #a855f7;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.brand-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.hero-section {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.hero-section h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.hero-section p {
+    color: #cbd5e1;
+    font-size: 1rem;
+    margin-bottom: 6px;
+}
+
+.hero-sub {
+    color: #94a3b8;
+    font-size: 0.85rem;
+}
+
+/* Карточки предметов */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.subject-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 18px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.subject-card:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-3px);
+    border-color: #a855f7;
+}
+
+.card-icon {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.card-title {
+    font-weight: bold;
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.card-desc {
+    font-size: 0.75rem;
+    color: #94a3b8;
+}
+
+/* Область сообщений */
+.chat-history {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-right: 10px;
+}
+
+.msg {
+    max-width: 80%;
+    padding: 12px 18px;
+    border-radius: 14px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+.user-msg {
+    background: #7c3aed;
+    align-self: flex-end;
+    border-bottom-right-radius: 2px;
+}
+
+.bot-msg {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    align-self: flex-start;
+    border-bottom-left-radius: 2px;
+}
+
+/* Поле ввода */
+.chat-input-box {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    padding: 8px 12px 8px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chat-input-box input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 0.95rem;
+}
+
+.chat-input-box button {
+    background: #a855f7;
+    border: none;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.1rem;
+}

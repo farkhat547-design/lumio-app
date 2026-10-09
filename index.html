@@ -3,176 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LUMIO — ИИ-репетитор ОРТ</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #121214;
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        /* Карточка Авторизации / Регистрации */
-        .auth-card {
-            background: #1e1e24;
-            padding: 30px;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 380px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            text-align: center;
-        }
-
-        .auth-card h2 {
-            margin-bottom: 20px;
-            color: #a5b4fc;
-        }
-
-        .auth-card input {
-            width: 100%;
-            margin-bottom: 12px;
-            padding: 12px;
-            background: #121214;
-            border: 1px solid #383846;
-            border-radius: 8px;
-            color: white;
-            outline: none;
-        }
-
-        .auth-card button.main-btn {
-            width: 100%;
-            padding: 12px;
-            background: #6366f1;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 5px;
-        }
-
-        .switch-btn {
-            background: transparent;
-            border: none;
-            color: #a5b4fc;
-            font-size: 0.85rem;
-            margin-top: 15px;
-            cursor: pointer;
-            text-decoration: underline;
-        }
-
-        .status-msg {
-            font-size: 0.85rem;
-            margin-top: 12px;
-            display: none;
-        }
-
-        .error { color: #ef4444; }
-        .success { color: #10b981; }
-
-        /* Чат */
-        .chat-card {
-            width: 100%;
-            max-width: 600px;
-            height: 90vh;
-            background: #1e1e24;
-            border-radius: 16px;
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .header {
-            padding: 20px;
-            background: #282832;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #383846;
-        }
-
-        .header h2 {
-            font-size: 1.2rem;
-            color: #a5b4fc;
-        }
-
-        .chat-container {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .message {
-            max-width: 80%;
-            padding: 12px 16px;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            line-height: 1.4;
-            word-wrap: break-word;
-        }
-
-        .user-msg {
-            background-color: #6366f1;
-            color: white;
-            align-self: flex-end;
-            border-bottom-right-radius: 2px;
-        }
-
-        .bot-msg {
-            background-color: #2a2a36;
-            color: #e2e8f0;
-            align-self: flex-start;
-            border-bottom-left-radius: 2px;
-            white-space: pre-wrap;
-        }
-
-        .input-area {
-            padding: 15px;
-            background: #282832;
-            display: flex;
-            gap: 10px;
-            border-top: 1px solid #383846;
-        }
-
-        .input-area input {
-            flex: 1;
-            background: #121214;
-            border: 1px solid #383846;
-            padding: 12px 16px;
-            border-radius: 8px;
-            color: white;
-            outline: none;
-        }
-
-        .input-area button {
-            background: #6366f1;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-    </style>
+    <title>Lumio AI — Персональный помощник</title>
+    <!-- Подключаем CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Экран Входа / Регистрации -->
+    <!-- Вход / Регистрация -->
     <div class="auth-card" id="authCard">
-        <h2 id="formTitle">LUMIO — Вход</h2>
+        <h2 id="formTitle">Lumio — Вход</h2>
         <input type="text" id="username" placeholder="Логин (Email)">
         <input type="password" id="password" placeholder="Пароль">
         
@@ -182,155 +21,54 @@
         <div class="status-msg" id="statusMsg"></div>
     </div>
 
-    <!-- Чат -->
-    <div class="chat-card" id="chatCard">
-        <div class="header">
-            <h2>LUMIO</h2>
+    <!-- Основное приложение -->
+    <div class="app-container" id="appContainer">
+        <div class="navbar">
+            <span class="brand-title">Lumio</span>
+            <span class="logo-badge">AI</span>
         </div>
 
-        <div class="chat-container" id="chat-container">
-            <div class="message bot-msg">Привет! Я LUMIO, твой ИИ-репетитор по подготовке к ОРТ. Чем помочь сегодня?</div>
+        <div class="hero-section" id="heroSection">
+            <h1>Привет! Я Lumio</h1>
+            <p>Твой персональный AI-помощник в обучении.</p>
+            <span class="hero-sub">С чего начнём?</span>
         </div>
 
-        <div class="input-area">
-            <input type="text" id="user-input" placeholder="Задай вопрос по ОРТ..." onkeypress="if(event.key === 'Enter') sendMessage()">
+        <!-- Кнопки предметных карточек -->
+        <div class="cards-grid" id="cardsGrid">
+            <div class="subject-card" onclick="selectSubject('Математика')">
+                <div class="card-icon">Σ</div>
+                <div class="card-title">Математика</div>
+                <div class="card-desc">Решение задач и объяснение тем</div>
+            </div>
+            <div class="subject-card" onclick="selectSubject('Аналогии')">
+                <div class="card-icon">◇</div>
+                <div class="card-title">Аналогии</div>
+                <div class="card-desc">Логика и поиск связей</div>
+            </div>
+            <div class="subject-card" onclick="selectSubject('Чтение')">
+                <div class="card-icon">◎</div>
+                <div class="card-title">Чтение</div>
+                <div class="card-desc">Тексты и понимание смысла</div>
+            </div>
+            <div class="subject-card" onclick="selectSubject('Грамматика')">
+                <div class="card-icon">Aa</div>
+                <div class="card-title">Грамматика</div>
+                <div class="card-desc">Правила и практика</div>
+            </div>
+        </div>
+
+        <!-- История чата -->
+        <div class="chat-history" id="chatHistory"></div>
+
+        <!-- Поле ввода -->
+        <div class="chat-input-box">
+            <input type="text" id="userInput" placeholder="Задай вопрос по ОРТ..." onkeypress="if(event.key === 'Enter') sendMessage()">
             <button onclick="sendMessage()">→</button>
         </div>
     </div>
 
-    <script>
-        let isLoginMode = true;
-
-        // Переключение режимов: Вход / Регистрация
-        function toggleAuthMode() {
-            isLoginMode = !isLoginMode;
-            const title = document.getElementById('formTitle');
-            const mainBtn = document.getElementById('mainBtn');
-            const switchBtn = document.getElementById('switchBtn');
-            const statusMsg = document.getElementById('statusMsg');
-
-            statusMsg.style.display = 'none';
-
-            if (isLoginMode) {
-                title.innerText = "LUMIO — Вход";
-                mainBtn.innerText = "Войти";
-                switchBtn.innerText = "Нет аккаунта? Зарегистрироваться";
-            } else {
-                title.innerText = "LUMIO — Регистрация";
-                mainBtn.innerText = "Создать аккаунт";
-                switchBtn.innerText = "Уже есть аккаунт? Войти";
-            }
-        }
-
-        // Обработчик входа и регистрации
-        function handleAuth() {
-            const user = document.getElementById('username').value.trim();
-            const pass = document.getElementById('password').value.trim();
-
-            if (!user || !pass) {
-                showStatus("Заполните логин и пароль!", "error");
-                return;
-            }
-
-            // Достаем базу пользователей из браузера
-            const users = JSON.parse(localStorage.getItem('lumio_users') || '{}');
-
-            if (isLoginMode) {
-                // ВХОД
-                if (users[user] && users[user] === pass) {
-                    document.getElementById('authCard').style.display = 'none';
-                    document.getElementById('chatCard').style.display = 'flex';
-                } else {
-                    showStatus("Неверный логин или пароль!", "error");
-                }
-            } else {
-                // РЕГИСТРАЦИЯ
-                if (users[user]) {
-                    showStatus("Пользователь уже существует!", "error");
-                    return;
-                }
-
-                users[user] = pass;
-                localStorage.setItem('lumio_users', JSON.stringify(users));
-                showStatus("Успешная регистрация! Теперь войдите.", "success");
-                toggleAuthMode();
-            }
-        }
-
-        function showStatus(text, type) {
-            const statusMsg = document.getElementById('statusMsg');
-            statusMsg.innerText = text;
-            statusMsg.className = "status-msg " + type;
-            statusMsg.style.display = 'block';
-        }
-
-        // Ваш зашифрованный API ключ
-        const encodedKey = "QVEuQWI4Uk42STU2QXBsOTc1MlFic2NQZ1ZPMWdDVllPcDdNYzhub3NPZC1kaHZKYVVmMmc="; 
-        const GEMINI_API_KEY = atob(encodedKey).trim();
-
-        const modelsToTry = [
-            'gemini-3.8-flash',
-            'gemini-3.7-flash',
-        ];
-
-        async function sendMessage() {
-            const input = document.getElementById('user-input');
-            const chat = document.getElementById('chat-container');
-
-            if (!input || !chat) return;
-
-            const text = input.value.trim();
-            if (!text) return;
-
-            const userMsg = document.createElement('div');
-            userMsg.className = 'message user-msg';
-            userMsg.innerText = text;
-            chat.appendChild(userMsg);
-
-            input.value = '';
-            chat.scrollTop = chat.scrollHeight;
-
-            const botMsg = document.createElement('div');
-            botMsg.className = 'message bot-msg';
-            botMsg.innerText = "Думаю...";
-            chat.appendChild(botMsg);
-            chat.scrollTop = chat.scrollHeight;
-
-            let success = false;
-
-            for (const model of modelsToTry) {
-                try {
-                    const url = "https://generativelanguage.googleapis.com/v1beta/models/" + model + ":generateContent?key=" + GEMINI_API_KEY;
-
-                    const response = await fetch(url, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            contents: [{
-                                role: "user",
-                                parts: [{ text: "Ты — LUMIO, ИИ-репетитор по подготовке к ОРТ в Кыргызстане. Отвечай кратко и только по-русски. Вопрос: " + text }]
-                            }]
-                        })
-                    });
-
-                    const data = await response.json();
-
-                    if (response.ok) {
-                        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
-                        botMsg.innerText = reply || "Пустой ответ от ИИ.";
-                        chat.scrollTop = chat.scrollHeight;
-                        success = true;
-                        break;
-                    }
-                } catch (err) {
-                    console.error("Ошибка сети:", err);
-                }
-            }
-
-            if (!success) {
-                botMsg.innerText = "Ошибка отправки. Попробуйте ещё раз.";
-            }
-        }
-    </script>
+    <!-- Подключаем JavaScript -->
+    <script src="script.js"></script>
 </body>
 </html>
