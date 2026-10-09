@@ -132,54 +132,66 @@ function selectSubject(subject) {
 async function sendMessage() {
     const input = document.getElementById('userInput');
     const history = document.getElementById('chatHistory');
-
     if (!input || !history) return;
 
     const text = input.value.trim();
     if (!text) return;
 
+    // Скрываем приветствие и карточки при первом сообщении
     const hero = document.getElementById('heroSection');
     const cards = document.getElementById('cardsGrid');
     if (hero) hero.style.display = 'none';
     if (cards) cards.style.display = 'none';
 
+    // 1. Рисуем сообщение пользователя в чате
     const userMsg = document.createElement('div');
     userMsg.className = 'msg user-msg';
     userMsg.innerText = text;
     history.appendChild(userMsg);
-
+    
     input.value = '';
     history.scrollTop = history.scrollHeight;
 
+    // 2. Создаем блок для ответа ИИ с эффектом загрузки
     const botMsg = document.createElement('div');
     botMsg.className = 'msg bot-msg';
-    botMsg.innerText = translations[currentLang].thinking;
+    botMsg.innerText = currentLang === 'kg' ? 'Ойлонууда...' : 'Думаю...';
     history.appendChild(botMsg);
     history.scrollTop = history.scrollHeight;
 
-    await new Promise(resolve => setTimeout(resolve, 800));
+    try {
+        // Твой бесплатный API ключ от Google AI Studio
+        const API_KEY = "ВСТАВЬ_СВОЙ_API_КЛЮЧ_СЮДА"; 
+        
+        // Используем быструю и бесплатную модель gemini-1.5-flash
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                contents: [
+                    {
+                        parts: [
+                            { 
+                                text: `Ты — Lumio, дружелюбный ИИ-репетитор по подготовке к ОРТ (Общереспубликанскому тестированию) в Кыргызстане. Отвечай на языке запроса (русский или кыргызский). Помогай разбирать математическое мышление, аналогии и чтение. Вопрос пользователя: ${text}` 
+                            }
+                        ]
+                    }
+                ]
+            })
+        });
 
-    let reply = "";
-    const lowerText = text.toLowerCase();
-
-    if (currentLang === 'kg') {
-        if (lowerText.includes('математика') || lowerText.includes('математик')) {
-            reply = "🔢 **«Математикалык ой жүгүртүү» бөлүмү (ЖРТ):**\n\n1-маселе: Товардын баасы алгач 20% га жогорулап, андан кийин 20% га арзандады. Баштапкы баа кандай өзгөрдү?\n1) Өзгөргөн жок\n2) 4% га азайды\n3) 4% га көбөйдү\n\nЖооптун номерин жаз!";
-        } else if (lowerText.includes('аналог') || lowerText.includes('аналогия')) {
-            reply = "◇ **«Аналогиялар» бөлүмү (ЖРТ):**\n\n1-маселе: Жуп: КИТЕП : БЕТ\nОкшош жупту танда:\nА) Үй : Дубал\nБ) Токой : Дарак\nВ) Унаа : Дөңгөлөк\n\nЖоопту жаз!";
+        const data = await response.json();
+        
+        // Достаем ответ от модели
+        if (data.candidates && data.candidates[0].content.parts[0].text) {
+            botMsg.innerText = data.candidates[0].content.parts[0].text;
         } else {
-            reply = translations.kg.welcome;
+            botMsg.innerText = currentLang === 'kg' ? 'Ката кетти, кайра аракет кылыңыз.' : 'Произошла ошибка, попробуйте еще раз.';
         }
-    } else {
-        if (lowerText.includes('математик') || lowerText.includes('задач')) {
-            reply = "🔢 **Секция «Математическое мышление» (ОРТ):**\n\nЗадача №1: Если цена товара сначала выросла на 20%, а потом снизилась на 20%, как изменилась первоначальная цена?\n1) Не изменилась\n2) Уменьшилась на 4%\n3) Увеличилась на 4%\n\nНапиши номер ответа!";
-        } else if (lowerText.includes('аналог')) {
-            reply = "◇ **Секция «Аналогии» (ОРТ):**\n\nЗадача №1: Пара: КНИГА : СТРАНИЦА\nВыберите похожую пару:\nА) Дом : Стена\nБ) Лес : Дерево\nВ) Автомобиль : Колесо\n\nНапиши букву ответа!";
-        } else {
-            reply = translations.ru.welcome;
-        }
+    } catch (error) {
+        console.error(error);
+        botMsg.innerText = currentLang === 'kg' ? 'Интернет байланышында ката бар.' : 'Ошибка соединения с сервером.';
     }
 
-    botMsg.innerText = reply;
     history.scrollTop = history.scrollHeight;
 }
