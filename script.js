@@ -164,19 +164,18 @@ async function sendMessage() {
         const API_KEY = "AQ.Ab8RN6LHYrN-sdKEH-pNYBVf70SbqUm94RRbXK-2nuXHP7FvaQ"; 
         
         // Используем быструю и бесплатную модель gemini-1.5-flash
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'x-goog-api-key': API_KEY // Передаем ключ в заголовке безопасности
+            },
             body: JSON.stringify({
-                contents: [
-                    {
-                        parts: [
-                            { 
-                                text: `Ты — Lumio, дружелюбный ИИ-репетитор по подготовке к ОРТ (Общереспубликанскому тестированию) в Кыргызстане. Отвечай на языке запроса (русский или кыргызский). Помогай разбирать математическое мышление, аналогии и чтение. Вопрос пользователя: ${text}` 
-                            }
-                        ]
-                    }
-                ]
+                contents: [{
+                    parts: [{
+                        text: `Ты — Lumio, ИИ-репетитор по ОРТ в Кыргызстане. Отвечай кратко и понятно на языке запроса. Вопрос: ${text}`
+                    }]
+                }]
             })
         });
 
