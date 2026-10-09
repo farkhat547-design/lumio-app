@@ -126,7 +126,7 @@ async function sendMessage() {
     let success = false;
 
     // Перебираем модели по очереди: если первая занята или недоступна, сразу переключается на вторую
-    for (const model of ['gemini-1.5-flash', 'gemini-2.0-flash']) {
+    for (const model of ['gemini-3.8-flash', 'gemini-3.7-flash']) {
         try {
             const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
 
