@@ -226,8 +226,8 @@ input::placeholder {
 /* Main app shell - ИСПРАВЛЕНО ДЛЯ КОРРЕКТНОЙ ПРОКРУТКИ */
 .app-container {
     width: min(100%, 1080px);
-    height: 90vh;
-    max-height: 900px;
+    height: 84vh;
+    max-height: 820px;
     min-height: 560px;
     display: none;
     flex-direction: column;
