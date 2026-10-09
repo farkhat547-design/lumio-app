@@ -86,7 +86,7 @@ function showStatus(text, type) {
     statusMsg.style.color = type === 'error' ? 'red' : 'green';
 }
 
-const GEMINI_API_KEY = "AIzaSyAb8RN6IONzbzKMO1h16idftWqSLgsxJ_hZpUE7JOdxAud_Kpig";
+const GEMINI_API_KEY = "AIzaSyAb8RN6I0NzbzKM01h16idftWqSLgsxJ_hZpUE7J0dxAud_Kpig";
 
 function selectSubject(subject) {
     const input = document.getElementById('userInput');
