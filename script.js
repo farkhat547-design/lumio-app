@@ -129,16 +129,17 @@ function selectSubject(subject) {
     sendMessage();
 }
 
+// Системные промпты для ролей (исправлена запятая)
 const SYSTEM_PROMPT = {
     student: "Ты - Lumio AI, терпеливый репетитор для учеников. Помогай готовиться к экзаменам (ОРТ, LGS/YKS), объясняй простыми словами, наталкивая на решение.",
-    teacher: "Ты - Lumio AI, методический ассистент для преподавателей. Помогай составлять планы уроков, тесты и методические материалы."
-    language: "Ты - Lumio AI, Практикуй языки, исправляй ошибки, объясняй грамматику."
+    teacher: "Ты - Lumio AI, методический ассистент для преподавателей. Помогай составлять планы уроков, тесты и методические материалы.",
+    language: "Ты - Lumio AI, интерактивный языковой репетитор. Практикуй языки, исправляй ошибки, объясняй грамматику."
 };
 
 function getCurrentSystemPrompt() {
     const roleSelect = document.getElementById('roleSelect');
     const role = roleSelect ? roleSelect.value : 'student';
-    return SYSTEM_PROMPT[role];
+    return SYSTEM_PROMPT[role] || SYSTEM_PROMPT.student;
 }
 
 async function sendMessage() {
@@ -172,20 +173,19 @@ async function sendMessage() {
     history.scrollTop = history.scrollHeight;
 
     try {
-        // Твой бесплатный API ключ от Google AI Studio
         const API_KEY = "AQ.Ab8RN6LKQ0RJ30bWUyJPTbgqo85sTs2loij3r_0fNKM_C5a8nA"; 
+        const systemInstruction = getCurrentSystemPrompt();
         
-        // Используем быструю и бесплатную модель gemini-1.5-flash
         const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent`, {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json',
-                'x-goog-api-key': API_KEY // Передаем ключ в заголовке безопасности
+                'x-goog-api-key': API_KEY 
             },
             body: JSON.stringify({
                 contents: [{
                     parts: [{
-                        text: `Ты — Lumio, ИИ-репетитор по ОРТ в Кыргызстане. Отвечай кратко и понятно на языке запроса. Вопрос: ${text}`
+                        text: `${systemInstruction}\n\nЯзык ответа: ${currentLang === 'kg' ? 'кыргызский' : 'русский'}.\nВопрос пользователя: ${text}`
                     }]
                 }]
             })
@@ -193,7 +193,6 @@ async function sendMessage() {
 
         const data = await response.json();
         
-        // Достаем ответ от модели
         if (data.candidates && data.candidates[0].content.parts[0].text) {
             botMsg.innerText = data.candidates[0].content.parts[0].text;
         } else {

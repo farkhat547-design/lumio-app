@@ -22,29 +22,34 @@
 
     <!-- Основное приложение (изначально скрыто) -->
     <div class="app-container" id="appScreen" style="display: none;">
+        
+        <!-- Шапка с логотипом и переключателем ролей -->
         <div class="navbar">
             <div class="logo-group">
                 <span class="brand-title">Lumio</span>
                 <span class="logo-badge">AI</span>
             </div>
             <div class="role-selector-container">
-                <select id="roleSelector" class="role-selector">
-                    <option value="student">Ученик</option>
-                    <option value="teacher">Учитель</option>
-                    <option value="language">Изучение языка</option>
+                <select id="roleSelect" class="role-selector">
+                    <option value="student">🎓 Ученик (ОРТ / Экзамены)</option>
+                    <option value="teacher">👨‍🏫 Учитель (Планы / Тесты)</option>
+                    <option value="language">🗣 Изучение языка</option>
                 </select>
             </div>
         </div>
-        </div> id="heroSection">
+
+        <!-- Приветственный блок -->
+        <div class="hero-section" id="heroSection">
             <h1>Привет! Я Lumio</h1>
             <p>Твой персональный AI-помощник в обучении.</p>
             <span class="hero-sub">С чего начнём?</span>
         </div>
 
-       <div class="lang-switcher">
-    <button onclick="setLanguage('ru')" id="langRuBtn" class="active-lang">Русский</button>
-    <button onclick="setLanguage('kg')" id="langKgBtn">Кыргызча</button>
-</div>
+        <!-- Переключатель языка интерфейса -->
+        <div class="lang-switcher">
+            <button onclick="setLanguage('ru')" id="langRuBtn" class="active-lang">Русский</button>
+            <button onclick="setLanguage('kg')" id="langKgBtn">Кыргызча</button>
+        </div>
 
         <!-- Кнопки предметных карточек -->
         <div class="cards-grid" id="cardsGrid">
@@ -78,6 +83,7 @@
             <input type="text" id="userInput" placeholder="Задай вопрос по ОРТ..." onkeypress="if(event.key === 'Enter') sendMessage()">
             <button onclick="sendMessage()">→</button>
         </div>
+
     </div>
 
     <!-- Подключаем JavaScript -->
