@@ -23,7 +23,7 @@
     <!-- Основное приложение (изначально скрыто) -->
     <div class="app-container" id="appScreen" style="display: none;">
         
-        <!-- Шапка с логотипом и переключателем ролей -->
+        <!-- Шапка с логотипом и выпадающим списком ролей -->
         <div class="navbar">
             <div class="logo-group">
                 <span class="brand-title">Lumio</span>
@@ -32,17 +32,10 @@
             <div class="role-selector-container">
                 <select id="roleSelect" class="role-selector">
                     <option value="student">🎓 Ученик (ОРТ / Экзамены)</option>
-                    <option value="teacher">👨‍🏫 Учитель (Планы / Тесты)</option>
-                    <option value="language">🗣 Изучение языка</option>
+                    <option value="teacher">👨‍🏫 Учитель (Планы / Рейтинг)</option>
+                    <option value="language">🗣 Изучение языков</option>
                 </select>
             </div>
-        </div>
-
-        <!-- Приветственный блок -->
-        <div class="hero-section" id="heroSection">
-            <h1>Привет! Я Lumio</h1>
-            <p>Твой персональный AI-помощник в обучении.</p>
-            <span class="hero-sub">С чего начнём?</span>
         </div>
 
         <!-- Переключатель языка интерфейса -->
@@ -51,28 +44,9 @@
             <button onclick="setLanguage('kg')" id="langKgBtn">Кыргызча</button>
         </div>
 
-        <!-- Кнопки предметных карточек -->
-        <div class="cards-grid" id="cardsGrid">
-            <div class="subject-card" onclick="selectSubject('Математика')">
-                <div class="card-icon">Σ</div>
-                <div class="card-title">Математика</div>
-                <div class="card-desc">Решение задач и объяснение тем</div>
-            </div>
-            <div class="subject-card" onclick="selectSubject('Аналогии')">
-                <div class="card-icon">◇</div>
-                <div class="card-title">Аналогии</div>
-                <div class="card-desc">Логика и поиск связей</div>
-            </div>
-            <div class="subject-card" onclick="selectSubject('Чтение')">
-                <div class="card-icon">◎</div>
-                <div class="card-title">Чтение</div>
-                <div class="card-desc">Тексты и понимание смысла</div>
-            </div>
-            <div class="subject-card" onclick="selectSubject('Грамматика')">
-                <div class="card-icon">Aa</div>
-                <div class="card-title">Грамматика</div>
-                <div class="card-desc">Правила и практика</div>
-            </div>
+        <!-- Динамический контент (меняется в зависимости от выбранной роли) -->
+        <div id="dynamicContentContainer">
+            <!-- Сюда JavaScript автоматически подгружает заголовок, подзаголовок и карточки -->
         </div>
 
         <!-- История чата -->
@@ -80,7 +54,7 @@
 
         <!-- Поле ввода -->
         <div class="chat-input-box">
-            <input type="text" id="userInput" placeholder="Задай вопрос по ОРТ..." onkeypress="if(event.key === 'Enter') sendMessage()">
+            <input type="text" id="userInput" placeholder="Задай вопрос..." onkeypress="if(event.key === 'Enter') sendMessage()">
             <button onclick="sendMessage()">→</button>
         </div>
 
