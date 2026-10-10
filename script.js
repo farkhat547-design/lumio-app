@@ -219,7 +219,7 @@ async function sendMessage() {
         const API_KEY = "AQ.Ab8RN6IppIcLnYFYaA0lhqscjuITnBF_129Y4K8s63Lpn0xtAw"; 
         const systemInstruction = getCurrentSystemPrompt();
         
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent`, {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-3.8-flash:generateContent`, {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json',
