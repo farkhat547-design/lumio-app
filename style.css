@@ -84,7 +84,8 @@ body::after {
 
 /* Shared controls */
 button,
-input {
+input,
+select {
     font: inherit;
 }
 
@@ -94,6 +95,7 @@ button {
 
 button:focus-visible,
 input:focus-visible,
+select:focus-visible,
 .subject-card:focus-visible {
     outline: 2px solid var(--lavender);
     outline-offset: 3px;
@@ -223,7 +225,7 @@ input::placeholder {
     color: #86efac;
 }
 
-/* Main app shell - ИСПРАВЛЕНО ДЛЯ КОРРЕКТНОЙ ПРОКРУТКИ */
+/* Main app shell */
 .app-container {
     width: min(100%, 1080px);
     height: 85vh;
@@ -242,15 +244,21 @@ input::placeholder {
     animation: lumio-rise 650ms ease both;
 }
 
-/* Top bar */
+/* Top bar & Role Selector */
 .navbar {
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-content: space-between;
     flex-shrink: 0;
-    margin-bottom: 20px;
-    padding-bottom: 15px;
+    margin-bottom: 18px;
+    padding-bottom: 14px;
     border-bottom: 1px solid rgba(196, 181, 253, 0.12);
+}
+
+.logo-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .brand-title {
@@ -275,6 +283,40 @@ input::placeholder {
     font-size: 0.68rem;
     font-weight: 800;
     letter-spacing: 0.08em;
+}
+
+/* Дизайн контейнера и выпадающего списка ролей */
+.role-selector-container {
+    display: flex;
+    align-items: center;
+    background: rgba(30, 19, 59, 0.85);
+    border: 1px solid rgba(168, 85, 247, 0.35);
+    border-radius: 12px;
+    padding: 4px 10px;
+    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.15);
+    transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.role-selector-container:hover {
+    border-color: var(--border-bright);
+    box-shadow: 0 4px 20px rgba(168, 85, 247, 0.25);
+}
+
+.role-selector {
+    background: transparent;
+    color: var(--lavender);
+    border: none;
+    outline: none;
+    font-size: 0.88rem;
+    font-weight: 700;
+    padding: 6px 8px;
+    cursor: pointer;
+}
+
+.role-selector option {
+    background: #140d2b;
+    color: var(--text);
+    padding: 10px;
 }
 
 /* Hero */
@@ -425,17 +467,17 @@ input::placeholder {
     line-height: 1.5;
 }
 
-/* Chat messages - ИСПРАВЛЕНО ДЛЯ ПОДДЕРЖКИ СКРОЛЛА */
+/* Chat messages */
 .chat-history {
     display: flex;
     flex: 1 1 auto;
     flex-direction: column;
     gap: 12px;
-    min-height: 0; /* Важно для работы flex-скролла */
+    min-height: 0;
     max-height: 100%;
     margin-bottom: 12px;
     padding-right: 6px;
-    overflow-y: auto; /* Включает прокрутку вниз */
+    overflow-y: auto;
     overscroll-behavior: contain;
     scrollbar-color: rgba(168, 85, 247, 0.45) transparent;
     scrollbar-width: thin;
