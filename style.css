@@ -337,3 +337,14 @@ button, input, select {
     font-size: 1.45rem;
     cursor: pointer;
 }
+
+.chatHistory {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-x: contain;
+    scrollbar-width: thin;
+}
