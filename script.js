@@ -129,6 +129,18 @@ function selectSubject(subject) {
     sendMessage();
 }
 
+const SYSTEM_PROMPT = {
+    student: "Ты - Lumio AI, терпеливый репетитор для учеников. Помогай готовиться к экзаменам (ОРТ, LGS/YKS), объясняй простыми словами, наталкивая на решение.",
+    teacher: "Ты - Lumio AI, методический ассистент для преподавателей. Помогай составлять планы уроков, тесты и методические материалы."
+    language: "Ты - Lumio AI, Практикуй языки, исправляй ошибки, объясняй грамматику."
+};
+
+function getCurrentSystemPrompt() {
+    const roleSelect = document.getElementById('roleSelect');
+    const role = roleSelect ? roleSelect.value : 'student';
+    return SYSTEM_PROMPT[role];
+}
+
 async function sendMessage() {
     const input = document.getElementById('userInput');
     const history = document.getElementById('chatHistory');

@@ -23,11 +23,19 @@
     <!-- Основное приложение (изначально скрыто) -->
     <div class="app-container" id="appScreen" style="display: none;">
         <div class="navbar">
-            <span class="brand-title">Lumio</span>
-            <span class="logo-badge">AI</span>
+            <div class="logo-group">
+                <span class="brand-title">Lumio</span>
+                <span class="logo-badge">AI</span>
+            </div>
+            <div class="role-selector-container">
+                <select id="roleSelector" class="role-selector">
+                    <option value="student">Ученик</option>
+                    <option value="teacher">Учитель</option>
+                    <option value="language">Изучение языка</option>
+                </select>
+            </div>
         </div>
-
-        <div class="hero-section" id="heroSection">
+        </div> id="heroSection">
             <h1>Привет! Я Lumio</h1>
             <p>Твой персональный AI-помощник в обучении.</p>
             <span class="hero-sub">С чего начнём?</span>
