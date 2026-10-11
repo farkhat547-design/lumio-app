@@ -220,7 +220,7 @@ async function sendMessage() {
         const systemInstruction = getCurrentSystemPrompt();
 
         // 2. Вставь свой настоящий ключ от Google AI Studio (начинается на AIzaSy...)
-        const API_KEY = "AIzaSyAQAb8RN6KaIbsOJIyJn8A0sNSG_GTYadE2aQsTIvPvBkm1Fu-KPA"; 
+        const API_KEY = "AIzaSyAQ.Ab8RN6KaIbsOJIyJn8A0sNSG_GTYadE2aQsTIvPvBkm1Fu-KPA"; 
         
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
             method: 'POST',
