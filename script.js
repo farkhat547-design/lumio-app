@@ -193,13 +193,13 @@ async function sendMessage() {
     const text = input.value.trim();
     if (!text) return;
 
-    // Скрываем приветствие и карточки при первом сообщении
+    // Скрываем начальные секции
     const hero = document.getElementById('heroSection');
     const cards = document.getElementById('cardsGrid');
     if (hero) hero.style.display = 'none';
     if (cards) cards.style.display = 'none';
 
-    // 1. Сообщение пользователя
+    // 1. Показываем сообщение пользователя
     const userMsg = document.createElement('div');
     userMsg.className = 'msg user-msg';
     userMsg.innerText = text;
@@ -208,7 +208,7 @@ async function sendMessage() {
     input.value = '';
     history.scrollTop = history.scrollHeight;
 
-    // 2. Блок загрузки ответа ИИ
+    // 2. Блок ответа ИИ
     const botMsg = document.createElement('div');
     botMsg.className = 'msg bot-msg';
     botMsg.innerText = currentLang === 'kg' ? 'Ойлонууда...' : 'Думаю...';
@@ -216,24 +216,22 @@ async function sendMessage() {
     history.scrollTop = history.scrollHeight;
 
     try {
-        // Укажите ваш ключ из Google AI Studio
-        try {
+        // ВСТАВЬТЕ СЮДА ВАШ КЛЮЧ КАК ЕСТЬ (начинающийся с AQ.Ab8RN...)
+        // Ничего не дописывайте в начало (никаких AIzaSy) и ничего не стирайте!
+        const API_KEY = "AQ.Ab8RN6Ib8TwLn-EEQYPlotXvBUDtf6Ksh56jx6uSGYfgY1jowQ"; 
+
         const systemInstruction = getCurrentSystemPrompt();
-
-        // Скопируйте ваш токен прямо с экрана (начинается с AQ.Ab8RN...)
-        const API_KEY = "AQ.Ab8RN6J4gTQzbLhMSkHmM0V4NpI-GKVbTe7iVnlHgFUv7fCSUg"; 
-
         const promptText = `${systemInstruction}\nОтвечай на языке: ${currentLang === 'kg' ? 'кыргызский' : 'русский'}.\nЗапрос: ${text}`;
 
-        // URL вызываем БЕЗ параметра ?key=
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent`;
+        // Чистый URL без параметров ключа
+        const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
 
         const response = await fetch(url, {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json',
-                // Передаем токен через Bearer-авторизацию!
-                'Authorization': `Bearer ${API_KEY}`
+                // ВОТ ЗДЕСЬ СЕКРЕТ: новый заголовок для ключей формата AQ...
+                'x-goog-api-key': API_KEY 
             },
             body: JSON.stringify({
                 contents: [
@@ -254,10 +252,6 @@ async function sendMessage() {
             console.error("Gemini API Error:", data);
             botMsg.innerText = currentLang === 'kg' ? 'Ката кетти. Консольду текшериңиз.' : 'Ошибка запроса. Проверьте консоль.';
         }
-    } catch (error) {
-        console.error("Network Error:", error);
-        botMsg.innerText = currentLang === 'kg' ? 'Интернет байланышында ката бар.' : 'Ошибка соединения с сервером.';
-    }
     } catch (error) {
         console.error("Network Error:", error);
         botMsg.innerText = currentLang === 'kg' ? 'Интернет байланышында ката бар.' : 'Ошибка соединения с сервером.';
