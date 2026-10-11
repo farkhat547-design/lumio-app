@@ -193,13 +193,13 @@ async function sendMessage() {
     const text = input.value.trim();
     if (!text) return;
 
-    // Скрываем шапку приветствия и карточки при начале диалога
+    // Скрываем приветствие и карточки при первом сообщении
     const hero = document.getElementById('heroSection');
     const cards = document.getElementById('cardsGrid');
     if (hero) hero.style.display = 'none';
     if (cards) cards.style.display = 'none';
 
-    // 1. Рисуем сообщение пользователя
+    // 1. Сообщение пользователя
     const userMsg = document.createElement('div');
     userMsg.className = 'msg user-msg';
     userMsg.innerText = text;
@@ -214,37 +214,44 @@ async function sendMessage() {
     botMsg.innerText = currentLang === 'kg' ? 'Ойлонууда...' : 'Думаю...';
     history.appendChild(botMsg);
     history.scrollTop = history.scrollHeight;
- 
-    try {
-        // 1. Получаем текущую системную инструкцию (роль)
-        const systemInstruction = getCurrentSystemPrompt();
 
-        // 2. Вставь свой настоящий ключ от Google AI Studio (начинается на AIzaSy...)
-        const API_KEY = "AIzaSyAQ.Ab8RN6KaIbsOJIyJn8A0sNSG_GTYadE2aQsTIvPvBkm1Fu-KPA"; 
+    try {
+        // Укажите ваш ключ из Google AI Studio
+        const API_KEY = "ВСТАВЬТЕ_ВАШ_КЛЮЧ_СЮДА"; 
+        const systemInstruction = getCurrentSystemPrompt();
         
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
+        // Формируем чистый текст запроса
+        const promptText = `${systemInstruction}\nОтвечай на языке: ${currentLang === 'kg' ? 'кыргызский' : 'русский'}.\nЗапрос: ${text}`;
+
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+
+        const response = await fetch(url, {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                contents: [{
-                    parts: [{
-                        text: `${systemInstruction}\n\nЯзык ответа: ${currentLang === 'kg' ? 'кыргызский' : 'русский'}.\nЗапрос пользователя: ${text}`
-                    }]
-                }]
+                contents: [
+                    {
+                        parts: [
+                            { text: promptText }
+                        ]
+                    }
+                ]
             })
         });
 
         const data = await response.json();
         
-        if (data.candidates && data.candidates[0].content.parts[0].text) {
+        if (response.ok && data.candidates && data.candidates[0].content.parts[0].text) {
             botMsg.innerText = data.candidates[0].content.parts[0].text;
         } else {
-            botMsg.innerText = currentLang === 'kg' ? 'Ката кетти, кайра аракет кылыңыз.' : 'Произошла ошибка, попробуйте еще раз.';
+            // Если сервер вернул ошибку, выводим её описание в консоль для отладки
+            console.error("Gemini API Error:", data);
+            botMsg.innerText = currentLang === 'kg' ? 'Ката кетти (400/401). Консольду текшериңиз.' : 'Ошибка запроса. Проверьте консоль браузера.';
         }
     } catch (error) {
-        console.error(error);
+        console.error("Network Error:", error);
         botMsg.innerText = currentLang === 'kg' ? 'Интернет байланышында ката бар.' : 'Ошибка соединения с сервером.';
     }
 
