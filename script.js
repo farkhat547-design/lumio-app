@@ -217,7 +217,7 @@ async function sendMessage() {
 
     try {
         // Укажите ваш ключ из Google AI Studio
-        const API_KEY = "AIzaSyAQ.Ab8RN6Juf4E8tY_QoxVlnN5-qxAvGp7QDwnY-c3dWwE7E2uoHA"; 
+        const API_KEY = "AIzaSyAQAb8RN6Juf4E8tY_QoxVlnN5-qxAvGp7QDwnY-c3dWwE7E2uoHA"; 
         const systemInstruction = getCurrentSystemPrompt();
         
         // Формируем чистый текст запроса
