@@ -216,7 +216,7 @@ async function sendMessage() {
     history.scrollTop = history.scrollHeight;
 
     try {
-        const API_KEY = "AQ.Ab8RN6Ib8TwLn-EEQYPIotXvBUDtf6Ksh56jx6uSCYfgY1jowQ"; 
+        const API_KEY = "AQ.Ab8RN6KH1Y3O9RnGfxn14Fft6roQH9jE7DA-zKj9VxdanDXl-g"; 
 
         const systemInstruction = getCurrentSystemPrompt();
         const promptText = `${systemInstruction}\nОтвечай на языке: ${currentLang === 'kg' ? 'кыргызский' : 'русский'}.\nЗапрос: ${text}`;
