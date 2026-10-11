@@ -50,7 +50,7 @@ const ROLE_CONFIGS = {
     }
 };
 
-import { GenerativeLanguageClient } from "@google/generative-ai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 function toggleAuthMode() {
     isLoginMode = !isLoginMode;
@@ -218,7 +218,6 @@ async function sendMessage() {
     history.scrollTop = history.scrollHeight;
 
     try {
-        // Вставь свой ключ из Google AI Studio целиком
         const API_KEY = "AQ.Ab8RN6Ib8TwLn-EEQYPIotXvBUDtf6Ksh56jx6uSCYfgY1jowQ"; 
         
         const genAI = new GoogleGenerativeAI(API_KEY);
@@ -239,6 +238,13 @@ async function sendMessage() {
 
     history.scrollTop = history.scrollHeight;
 }
+
+// Делаем функции доступными глобально для HTML-атрибутов (onclick)
+window.toggleAuthMode = toggleAuthMode;
+window.handleAuth = handleAuth;
+window.setLanguage = setLanguage;
+window.selectSubject = selectSubject;
+window.sendMessage = sendMessage;
 
 // Слушатель для автоматического обновления карточек при смене селекта роли
 document.addEventListener('DOMContentLoaded', () => {
