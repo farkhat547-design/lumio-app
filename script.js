@@ -224,7 +224,7 @@ async function sendMessage() {
         const promptText = `${systemInstruction}\nОтвечай на языке: ${currentLang === 'kg' ? 'кыргызский' : 'русский'}.\nЗапрос: ${text}`;
 
         // Чистый URL без параметров ключа
-        const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
+        const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent";
 
         const response = await fetch(url, {
             method: 'POST',
