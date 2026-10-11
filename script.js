@@ -216,21 +216,25 @@ async function sendMessage() {
     history.scrollTop = history.scrollHeight;
  
     try {
-        const API_KEY = "AQ.Ab8RN6IVgtuox4zcgH6P6V-QfjKv4ce1QXIWHMbgJtp36zr46g"; 
+        // 1. Получаем текущую системную инструкцию (роль)
+        const systemInstruction = getCurrentSystemPrompt();
 
-const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
-    method: 'POST',
-    headers: { 
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-        contents: [{
-            parts: [{
-                text: `${systemInstruction}\n\nЯзык ответа: ${currentLang === 'kg' ? 'кыргызский' : 'русский'}.\nЗапрос пользователя: ${text}`
-            }]
-        }]
-    })
-});
+        // 2. Вставь свой настоящий ключ от Google AI Studio (начинается на AIzaSy...)
+        const API_KEY = "AQ.Ab8RN6IVgtuox4zcgH6P6V-QfjKv4ce1QXIWHMbgJtp36zr46g"; 
+        
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                contents: [{
+                    parts: [{
+                        text: `${systemInstruction}\n\nЯзык ответа: ${currentLang === 'kg' ? 'кыргызский' : 'русский'}.\nЗапрос пользователя: ${text}`
+                    }]
+                }]
+            })
+        });
 
         const data = await response.json();
         
