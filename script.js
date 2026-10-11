@@ -217,18 +217,23 @@ async function sendMessage() {
 
     try {
         // Укажите ваш ключ из Google AI Studio
-        const API_KEY = "AIzaSyAQAb8RN6Juf4E8tY_QoxVlnN5-qxAvGp7QDwnY-c3dWwE7E2uoHA"; 
+        try {
         const systemInstruction = getCurrentSystemPrompt();
-        
-        // Формируем чистый текст запроса
+
+        // Скопируйте ваш токен прямо с экрана (начинается с AQ.Ab8RN...)
+        const API_KEY = "AQ.Ab8RN6J4gTQzbLhMSkHmM0V4NpI-GKVbTe7iVnlHgFUv7fCSUg"; 
+
         const promptText = `${systemInstruction}\nОтвечай на языке: ${currentLang === 'kg' ? 'кыргызский' : 'русский'}.\nЗапрос: ${text}`;
 
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+        // URL вызываем БЕЗ параметра ?key=
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent`;
 
         const response = await fetch(url, {
             method: 'POST',
             headers: { 
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                // Передаем токен через Bearer-авторизацию!
+                'Authorization': `Bearer ${API_KEY}`
             },
             body: JSON.stringify({
                 contents: [
@@ -246,10 +251,13 @@ async function sendMessage() {
         if (response.ok && data.candidates && data.candidates[0].content.parts[0].text) {
             botMsg.innerText = data.candidates[0].content.parts[0].text;
         } else {
-            // Если сервер вернул ошибку, выводим её описание в консоль для отладки
             console.error("Gemini API Error:", data);
-            botMsg.innerText = currentLang === 'kg' ? 'Ката кетти (400/401). Консольду текшериңиз.' : 'Ошибка запроса. Проверьте консоль браузера.';
+            botMsg.innerText = currentLang === 'kg' ? 'Ката кетти. Консольду текшериңиз.' : 'Ошибка запроса. Проверьте консоль.';
         }
+    } catch (error) {
+        console.error("Network Error:", error);
+        botMsg.innerText = currentLang === 'kg' ? 'Интернет байланышында ката бар.' : 'Ошибка соединения с сервером.';
+    }
     } catch (error) {
         console.error("Network Error:", error);
         botMsg.innerText = currentLang === 'kg' ? 'Интернет байланышында ката бар.' : 'Ошибка соединения с сервером.';
