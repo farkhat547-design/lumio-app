@@ -216,22 +216,18 @@ async function sendMessage() {
     history.scrollTop = history.scrollHeight;
 
     try {
-        // ВСТАВЬТЕ СЮДА ВАШ КЛЮЧ КАК ЕСТЬ (начинающийся с AQ.Ab8RN...)
-        // Ничего не дописывайте в начало (никаких AIzaSy) и ничего не стирайте!
-        const API_KEY = "AQ.Ab8RN6Ib8TwLn-EEQYPlotXvBUDtf6Ksh56jx6uSGYfgY1jowQ"; 
+        const API_KEY = "AQ.Ab8RN6Ib8TwLn-EEQYPIotXvBUDtf6Ksh56jx6uSCYfgY1jowQ"; 
 
         const systemInstruction = getCurrentSystemPrompt();
         const promptText = `${systemInstruction}\nОтвечай на языке: ${currentLang === 'kg' ? 'кыргызский' : 'русский'}.\nЗапрос: ${text}`;
 
-        // Чистый URL без параметров ключа
-        const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent";
+        // Вставляем API_KEY прямо в URL
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
         const response = await fetch(url, {
             method: 'POST',
             headers: { 
-                'Content-Type': 'application/json',
-                // ВОТ ЗДЕСЬ СЕКРЕТ: новый заголовок для ключей формата AQ...
-                'x-goog-api-key': API_KEY 
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 contents: [
